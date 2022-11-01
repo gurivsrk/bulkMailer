@@ -1,0 +1,15 @@
+.bulkMailerAlert{
+    position: absolute;
+    right: 0;
+    top: 50px;
+    padding: 5px 20px;
+    background: #198754;
+    box-shadow: 0 0 10px #e4e4e4;
+    color: #fff;
+    font-size: 18px;
+    display: none;
+}
+#alert li{
+    text-transform: lowercase;
+}
+
