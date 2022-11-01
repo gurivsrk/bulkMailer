@@ -43,7 +43,7 @@ class SendNewsletter implements ShouldQueue
         $categies = $this->request['category_name'];
 
         if(in_array('all',$categies)){
-            $emails = bulkMailer::select('email')->get();
+            $emails = bulkMailer::select('email')->orderBy('id','desc')->get();
         }
         else{
             $emails = bulkMailer::select('email')->whereIn('category_id',$categies)->get();

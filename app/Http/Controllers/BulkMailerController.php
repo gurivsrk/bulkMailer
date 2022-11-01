@@ -109,7 +109,7 @@ class BulkMailerController extends Controller
     public function store(StorebulkMailerRequest $request)
     {
         $this->Email($request->all());
-        //return redirect()->back()->with('msg','Success');
+        return redirect()->back()->with('success','Successfully Send Emails');
     }
 
     /**
