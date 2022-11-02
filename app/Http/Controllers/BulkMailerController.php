@@ -87,7 +87,7 @@ class BulkMailerController extends Controller
 
          if(count($this->error) == 0 && $this->notice == false){
            $type = 'success';
-           $msg = 'SuccessFully Updated';
+           $msg = 'Successfully Updated';
          }
          elseif($this->notice != false){
             $type = 'noitce';

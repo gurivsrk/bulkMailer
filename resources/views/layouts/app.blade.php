@@ -41,7 +41,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{asset('/js/plugins/ckeditor')}}/ckeditor.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-    @stack('scripts')
     <script src="{{asset('/js/main.js')}}"></script>
     <script>
         $(document).ready(function(){
@@ -59,7 +58,7 @@
                     bg = '#ffc107'
                 }
                 $('#'+id+' ul').html(msg)
-                $('#'+id).css({'background': bg}).fadeIn().delay(5000).fadeOut()
+                $('#'+id).css({'background': bg}).fadeIn().delay(6000).fadeOut()
 
             }
             @if(Session::has('success'))

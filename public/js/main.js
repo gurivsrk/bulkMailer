@@ -11,6 +11,7 @@ $(document).ready(function(){
 
       $('#datatable').DataTable({
         stateSave: true,
+
       });
 
 
