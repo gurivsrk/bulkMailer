@@ -21,11 +21,17 @@ Route::middleware(['auth', 'verified'])->group(function(){
     })->name('dashboard');
     Route::get('/send-newsletter/single/{id}',function(){return view('newsletter');})->name('singleEmail');
     Route::get('/previous-campaigns',[IndexController::class, 'previous_campaigns'])->name('previousCampaigns');
-    Route::get('/add-emails',[IndexController::class, 'add_emails'])->name('addEmails');
     Route::get('/mailing-list',[IndexController::class, 'mail_list'])->name('mailList');
+
     Route::get('/send-newsletter',[BulkMailerController::class,'index'])->name('sendMail');
-    Route::post('/upload-emails',[BulkMailerController::class,'create'])->name('uploadeMails');
     Route::post('/bulkMailers',[BulkMailerController::class,'store'])->name('sendMailPost');
+
+    Route::get('/add-emails',[IndexController::class, 'add_emails'])->name('addEmails');
+    Route::post('/upload-emails',[BulkMailerController::class,'create'])->name('uploadeMails');
+
+    Route::get('/bulkMailers/{id}/delete',[BulkMailerController::class,'destroy'])->name('deleteEmail');
+    Route::get('/deleted-emails',[BulkMailerController::class,'showDeleted'])->name('deletedEmails');
+    Route::get('/restore-emails/{id}/restore',[BulkMailerController::class,'restore'])->name('restoreEmail');
 });
 
 require __DIR__.'/auth.php';

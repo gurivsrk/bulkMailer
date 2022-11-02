@@ -16,6 +16,13 @@
                                     {{ __('Add Mailing List') }}
                                  </x-add-button>
                             </a>
+
+                            <a href="{{ !(@$trash) ? route('deletedEmails') : route('mailList')}} ">
+                                <x-primary-button  class="ml-3 ">
+                                    {{ !(@$trash) ? __('Deleted Mailing List') :  __('Mailing List') }}
+                                 </x-primary-button>
+                            </a>
+
                         </div>
                         <div class="mailing_list mt-8">
                             <table id="datatable" class="display ">
@@ -33,22 +40,28 @@
                                     @foreach ($emails as $email)
                                         <tr>
                                             <td>{{$email->id}}</td>
-                                            <td>{{$email->email}}</td>
-                                            <td>{{$email->type}}</td>
+                                            <td class="tdEmail" data-val= "{{$email->email}}">{{$email->email}}</td>
+                                            <td class="tdType" data-val="{{$email->type}}">{{$email->type}}</td>
                                             <td>{{$email->status}}</td>
-                                            <td>{{$email->catname}}</td>
+                                            <td class="tdcategory" data-val="{{$email->catname}}">{{$email->catname}}</td>
                                             <td>
-                                                <x-fa-input link="{{route('singleEmail',[$email->id])}}" class="fa-paper-plane"/>
-                                                <x-fa-input class="fa-pencil"/>
-                                                <x-fa-input class="fa-trash"/>
+                                                @if(!(@$trash))
+                                                    <x-fa-input link="{{route('singleEmail',[$email->id])}}" :isBlank=true class="fa-paper-plane"/>
+                                                    <x-fa-input class="fa-pencil editTd"/>
+                                                    <x-fa-input link="{{route('deleteEmail',[$email->id])}}" class="fa-trash" onclick="return confirm('want to delete?')"/>
+                                                @else
+                                                    <x-fa-input link="{{route('restoreEmail',[$email->id])}}" class="fa-refresh" title="Restore" onclick="return confirm('want to retore?')"/>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="mt-5">
-                                {{ $emails->links()}}
-                            </div>
+                            @if(!(@$trash))
+                                <div class="mt-5">
+                                    {{ $emails->links()}}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

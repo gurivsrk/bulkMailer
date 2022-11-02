@@ -27,13 +27,6 @@
                             <x-input-error :messages="$errors->get('from_name')" class="mt-2" />
                         </div>
                         <div class="block mt-4">
-                            <x-input-label for="from_email" :value="__('From Email')" />
-
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="from_email" :value="old('from_email')" required autofocus />
-
-                            <x-input-error :messages="$errors->get('from_email')" class="mt-2" />
-                        </div>
-                        <div class="block mt-4">
                             <x-input-label for="categoryName" :value="__('Category Name')" />
                             <select class="block mt-1 w-full select1" name="category_name[]" multiple>
                                 <option value=""> Please select an option</option>

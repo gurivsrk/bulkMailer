@@ -37,7 +37,6 @@ class SendNewsletter implements ShouldQueue
     public function handle()
     {
         $fromName = $this->request['from_name'];
-        $fromEmail = $this->request['from_email'];
         $title = $this->request['title'];
         $message = $this->request['newsletter'];
         $categies = $this->request['category_name'];
@@ -50,7 +49,7 @@ class SendNewsletter implements ShouldQueue
         }
 
         foreach($emails as $email){
-            Mail::to($email)->send(new Newsletter( $fromName, $fromEmail ,$title, $message ));
+            Mail::to($email)->send(new Newsletter( $fromName, $title, $message ));
         }
     }
 }

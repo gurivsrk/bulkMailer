@@ -21,9 +21,8 @@ class Newsletter extends Mailable
      *
      * @return void
      */
-    public function __construct($fromName,$fromEmail,$subject,$msg)
+    public function __construct($fromName,$subject,$msg)
     {
-        $this->email = $fromEmail;
         $this->fromName = $fromName;
         $this->subject =   $subject;
         $this->msg =  $msg;

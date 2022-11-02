@@ -118,9 +118,11 @@ class BulkMailerController extends Controller
      * @param  \App\Models\bulkMailer  $bulkMailer
      * @return \Illuminate\Http\Response
      */
-    public function show(bulkMailer $bulkMailer)
+    public function showDeleted(bulkMailer $bulkMailer)
     {
-        //
+        $emails = $bulkMailer->onlyTrashed()->get();
+        $trash = true;
+        return view('mailList', compact('emails','trash'));
     }
 
     /**
@@ -152,8 +154,15 @@ class BulkMailerController extends Controller
      * @param  \App\Models\bulkMailer  $bulkMailer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(bulkMailer $bulkMailer)
+    public function destroy(bulkMailer $bulkMailer,$id)
     {
-        //
+        $bulkMailer->destroy($id);
+        return redirect()->back()->with('success','Deleted Successfully');
+    }
+
+    public function restore(bulkMailer $bulkMailer,$id)
+    {
+        $bulkMailer->where('id',$id)->restore();
+        return redirect()->back()->with('success','Restore Successfully');
     }
 }
