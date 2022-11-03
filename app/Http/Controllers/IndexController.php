@@ -37,4 +37,5 @@ class IndexController extends Controller
         return view('previousCampaigns',compact('emails'));
      }
 
+
 }

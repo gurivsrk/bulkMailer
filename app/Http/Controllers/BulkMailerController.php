@@ -32,6 +32,12 @@ class BulkMailerController extends Controller
         return view('newsletter',compact(['categories']));
     }
 
+    public function singleEmail(bulkMailer $bulkMailer, $id){
+        $isSingle = true;
+        $categories = $bulkMailer->where('id',$id)->get();
+        return view('newsletter',compact(['categories','isSingle']));
+     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -108,8 +114,10 @@ class BulkMailerController extends Controller
      */
     public function store(StorebulkMailerRequest $request)
     {
+
+
         $this->Email($request->all());
-        return redirect()->back()->with('success','Successfully Send Emails');
+        //return redirect()->back()->with('success','Successfully Send Emails');
     }
 
     /**

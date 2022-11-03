@@ -12,4 +12,6 @@ class newsletter extends Model
 
     protected $table = 'newsletter';
 
+    protected $guarded = ['id'];
+
 }

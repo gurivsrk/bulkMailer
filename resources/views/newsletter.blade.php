@@ -26,12 +26,12 @@
                             <x-input-error :messages="$errors->get('from_name')" class="mt-2" />
                         </div>
                         <div class="block mt-4">
-                            <x-input-label for="categoryName" :value="__('Category Name')" />
-                            <select class="block mt-1 w-full select1" name="category_name[]" multiple>
+                            <x-input-label for="categoryName" :value="@$isSingle?__('Emails'):__('Category Name')" />
+                            <select class="block mt-1 w-full {{@$isSingle ? 'select2' : 'select1'}}" name="category_name[]" multiple>
                                 <option value=""> Please select an option</option>
-                                <option value="all">All</option>
+                                @if(!(@$isSingle)) <option value="-12">All</option> @endif
                                 @foreach ($categories as $category)
-                                    <option value="{{$category->id}}">{{$category->title}}</option>
+                                    <option value="{{@$isSingle?$category->email :$category->id}}" {{@$isSingle?'selected':''}}>{{@$isSingle? $category->email :$category->title}}</option>
                                 @endforeach
                             </select>
 

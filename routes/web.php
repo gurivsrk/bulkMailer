@@ -19,10 +19,10 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('/send-newsletter/single/{id}',function(){return view('newsletter');})->name('singleEmail');
     Route::get('/previous-campaigns',[IndexController::class, 'previous_campaigns'])->name('previousCampaigns');
     Route::get('/mailing-list',[IndexController::class, 'mail_list'])->name('mailList');
 
+    Route::get('/send-newsletter/{id}/single',[BulkMailerController::class,'singleEmail'])->whereNumber('id')->name('singleEmail');
     Route::get('/send-newsletter',[BulkMailerController::class,'index'])->name('sendMail');
     Route::post('/bulkMailers',[BulkMailerController::class,'store'])->name('sendMailPost');
 
