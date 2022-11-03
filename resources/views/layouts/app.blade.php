@@ -42,6 +42,7 @@
     <script src="{{asset('/js/plugins/ckeditor')}}/ckeditor.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <script src="{{asset('/js/main.js')}}"></script>
+    @stack('scripts')
     <script>
         $(document).ready(function(){
             const alert = (id, msg ,type = 'success') =>{
