@@ -5,7 +5,7 @@ use App\Jobs\SendNewsletter;
 
 trait SendMail {
 
-    public function Email($request)
+    protected function Email($request)
     {
         $job = SendNewsletter::dispatch($request);
     }

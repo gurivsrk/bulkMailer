@@ -25,7 +25,6 @@ class StorebulkMailerRequest extends FormRequest
     {
         return [
             'from_name' => 'required',
-            'from_email' => 'required|email',
             'category_name' => 'required',
             'title' => 'required',
             'newsletter' => 'required'
