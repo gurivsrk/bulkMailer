@@ -15,7 +15,7 @@ class bulkMailer extends Model
 
     protected $guarded = ['id'];
 
-    // public function cateName(){
-    //    return $this->belongsTo(category::class,'category_id','id');
-    // }
+    public function scopeNotSend($query){
+       return $query->where('status','!=','success');
+    }
 }

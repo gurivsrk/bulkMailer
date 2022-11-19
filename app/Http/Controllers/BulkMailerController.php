@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\bulkMailer;
 use App\Models\category;
@@ -13,6 +14,7 @@ use App\Http\Requests\UpdatebulkMailerRequest;
 use App\Http\Requests\StoreCategoryRequest;
 
 use App\Traits\SendMail;
+use App\Mail\Newsletter;
 
 class BulkMailerController extends Controller
 {
@@ -34,8 +36,9 @@ class BulkMailerController extends Controller
 
     public function singleEmail(bulkMailer $bulkMailer, $id){
         $isSingle = true;
-        $categories = $bulkMailer->where('id',$id)->get();
-        return view('newsletter',compact(['categories','isSingle']));
+        $categories = $bulkMailer->where('id',$id)->first();
+        mail::mailer('smtp2')->to($categories->email)->send(new Newsletter('localhost@gmail.com','single test','testing mail function'));
+        //return view('newsletter',compact(['categories','isSingle']));
      }
 
     /**
