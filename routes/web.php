@@ -22,9 +22,12 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/previous-campaigns',[IndexController::class, 'previous_campaigns'])->name('previousCampaigns');
     Route::get('/mailing-list',[IndexController::class, 'mail_list'])->name('mailList');
 
+
+
     Route::get('/send-newsletter/{id}/single',[BulkMailerController::class,'singleEmail'])->whereNumber('id')->name('singleEmail');
     Route::get('/send-newsletter',[BulkMailerController::class,'index'])->name('sendMail');
     Route::post('/bulkMailers',[BulkMailerController::class,'store'])->name('sendMailPost');
+    Route::post('/ajax/mail-data-update',[BulkMailerController::class,'update'])->name('sendMailData');
 
     Route::get('/add-emails',[IndexController::class, 'add_emails'])->name('addEmails');
     Route::post('/upload-emails',[BulkMailerController::class,'create'])->name('uploadeMails');

@@ -10,7 +10,8 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.5.0/css/select.dataTables.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="{{asset('css/style.css')}}" rel="stylesheet" />
         <!-- Scripts -->
@@ -40,12 +41,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{asset('/js/plugins/ckeditor')}}/ckeditor.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/select/1.5.0/js/dataTables.select.min.js"></script>
     <script src="{{asset('/js/main.js')}}"></script>
-    @stack('scripts')
+
     <script>
         $(document).ready(function(){
-            const alert = (id, msg ,type = 'success') =>{
+            const customAlert = (id, msg ,type = 'success') =>{
                 let msgArray = [], rawMsg = [], bg = '#198754'
                 if(type =='errors'){
                    bg = '#dc3545'
@@ -63,14 +65,38 @@
 
             }
             @if(Session::has('success'))
-                alert('alert',"{{Session::get('success')}}")
+            customAlert('alert',"{{Session::get('success')}}")
             @endif
             @if(Session::has('noitce'))
-                alert('alert','{!!Session::get("noitce")!!}','noitce')
+            customAlert('alert','{!!Session::get("noitce")!!}','noitce')
             @endif
             @if(Session::has('fail'))
-                alert('alert','{!!Session::get("fail")!!}','errors')
+            customAlert('alert','{!!Session::get("fail")!!}','errors')
             @endif
+
+            $('.tableInput').on('change', function(){
+                if(confirm('sure to change')){
+                    const id = $(this).attr('data-id'),
+                    input= $(this).val(),
+                    $this = $(this),
+                    type = $(this).attr('data-type');
+                    $.ajax({
+                        type:'post',
+                        url: '{{route("sendMailData")}}',
+                        headers :{ 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                        data : {id, input, type},
+                        success: function(result){
+                            if(type == 'type'){
+                                const NewClass = input == 'pending' ? 'warning' :  ( input == 'unsubscribed'? 'danger': '' );
+                                $this.parent().parent().removeClass('warning').removeClass('danger').addClass(NewClass)
+                            }
+
+                            customAlert('alert',"updated successfully")
+                        }
+                    })
+                }
+            })
         })
     </script>
+     @stack('scripts')
 </html>

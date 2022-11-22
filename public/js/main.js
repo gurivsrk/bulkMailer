@@ -11,8 +11,14 @@ $(document).ready(function(){
 
       $('#datatable').DataTable({
         stateSave: true,
-
+        iDisplayLength:50,
       });
+
+
+
+    $('.tableInput').on('click', function(){
+        $(this).attr('readonly',false);
+    })
 
 
 });

@@ -16,6 +16,9 @@ class bulkMailer extends Model
     protected $guarded = ['id'];
 
     public function scopeNotSend($query){
-       return $query->where('status','!=','success');
+        return $query->where('status','!=','success');
+    }
+    public function scopeSubscribed($query){
+       return $query->where('type','subscribed');
     }
 }

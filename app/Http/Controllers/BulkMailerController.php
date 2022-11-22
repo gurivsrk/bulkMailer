@@ -36,9 +36,10 @@ class BulkMailerController extends Controller
 
     public function singleEmail(bulkMailer $bulkMailer, $id){
         $isSingle = true;
-        $categories = $bulkMailer->where('id',$id)->first();
-        mail::mailer('smtp2')->to($categories->email)->send(new Newsletter('localhost@gmail.com','single test','testing mail function'));
-        //return view('newsletter',compact(['categories','isSingle']));
+        $categories = $bulkMailer->where('id',$id)->limit(1)->get();
+        return view('newsletter',compact(['categories','isSingle']));
+        //dd($categories->email);
+        // mail::mailer('smtp2')->to($categories[0]->email)->send(new Newsletter('localhost@gmail.com','single test','testing mail function'));
      }
 
     /**
@@ -118,9 +119,8 @@ class BulkMailerController extends Controller
     public function store(StorebulkMailerRequest $request)
     {
 
-
         $this->Email($request->all());
-        //return redirect()->back()->with('success','Successfully Send Emails');
+        return redirect()->back()->with('success','Successfully Send Emails');
     }
 
     /**
@@ -154,9 +154,14 @@ class BulkMailerController extends Controller
      * @param  \App\Models\bulkMailer  $bulkMailer
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatebulkMailerRequest $request, bulkMailer $bulkMailer)
+    public function update(bulkMailer $bulkMailer, Request $request)
     {
-        //
+        if($request->post('type') == 'type'){
+            $bulkMailer->where('id',$request->post('id'))->update(['type' => $request->post('input')]);
+        }elseif($request->post('type') == 'email'){
+            $bulkMailer->where('id',$request->post('id'))->update(['email' => $request->post('input')]);
+        }
+       return 'success';
     }
 
     /**

@@ -31,7 +31,7 @@
                                 <option value=""> Please select an option</option>
                                 @if(!(@$isSingle)) <option value="-12">All</option> @endif
                                 @foreach ($categories as $category)
-                                    <option value="{{@$isSingle?$category->email :$category->id}}" {{@$isSingle?'selected':''}}>{{@$isSingle? $category->email :$category->title}}</option>
+                                    <option value="{{@$isSingle ? $category->email : $category->id}}" {{@$isSingle?'selected':''}}>{{@$isSingle? $category->email : $category->title}}</option>
                                 @endforeach
                             </select>
 

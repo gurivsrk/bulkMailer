@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Previous Campaigns') }}
+            {{ __('All Campaigns') }}
         </h2>
     </x-slot>
 
@@ -22,28 +22,28 @@
                                 <thead>
                                     <tr>
                                         <th>Id</th>
-                                        <th>Email</th>
-                                        <th>type</th>
+                                        <th>Subject</th>
+                                        <th>From</th>
                                         <th>Status</th>
-                                        <th>Category</th>
-                                        <th>Actions</th>
+                                        <th>Created on</th>
+                                        <th>Completed on</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($emails as $email)
+                                    @foreach ($allCampaign as $campaign)
                                         <tr>
-                                            <td>{{$email->id}}</td>
-                                            <td>{{$email->email}}</td>
-                                            <td>{{$email->type}}</td>
-                                            <td class="text-center">{{$email->status}}</td>
-                                            <td>{{$email->catname}}</td>
-                                            <td>Row 1 Data 2</td>
+                                            <td>{{$campaign->id}}</td>
+                                            <td>{{$campaign->Subject}}</td>
+                                            <td>{{$campaign->from_name}}</td>
+                                            <td class="text-center">{{$campaign->status}}</td>
+                                            <td>{{$campaign->created_at}}</td>
+                                            <td>{{$campaign->updated_at}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                             <div class="mt-5">
-                                {{ $emails->links()}}
+                                {{ $allCampaign->links()}}
                             </div>
                         </div>
                     </div>

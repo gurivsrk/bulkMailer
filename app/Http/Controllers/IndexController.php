@@ -33,8 +33,8 @@ class IndexController extends Controller
 
      public function previous_campaigns()
      {
-        $emails = newsletter::paginate(10);
-        return view('previousCampaigns',compact('emails'));
+        $allCampaign = newsletter::paginate(10);
+        return view('previousCampaigns',compact('allCampaign'));
      }
 
 

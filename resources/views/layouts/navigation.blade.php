@@ -19,7 +19,7 @@
                         {{ __('Mailing List') }}
                     </x-nav-link>
                     <x-nav-link :href="route('previousCampaigns')" :active="request()->routeIs('previousCampaigns')">
-                        {{ __('Previous Campaigns') }}
+                        {{ __('All Campaigns') }}
                     </x-nav-link>
                     <x-nav-link :href="route('sendMail')" :active="request()->routeIs('sendMail')">
                         {{ __('Send Newsletter') }}
