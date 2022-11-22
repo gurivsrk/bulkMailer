@@ -31,13 +31,13 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($allCampaign as $campaign)
-                                        <tr>
+                                        <tr class="{{$campaign->status == 'sending'? 'warning':($campaign->status == 'completed'? 'success' : '')}}">
                                             <td>{{$campaign->id}}</td>
                                             <td>{{$campaign->Subject}}</td>
                                             <td>{{$campaign->from_name}}</td>
                                             <td class="text-center">{{$campaign->status}}</td>
                                             <td>{{$campaign->created_at}}</td>
-                                            <td>{{$campaign->updated_at}}</td>
+                                            <td>{{$campaign->getCompleteTime($campaign->id)}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

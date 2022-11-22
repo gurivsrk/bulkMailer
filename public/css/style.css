@@ -3,6 +3,7 @@
     --dark-grey: #e4e4e4;
     --warning: #fffae0;
     --green: #198754;
+    --success: #e0ffe9;
 }
 .bulkMailerAlert{
     position: fixed;
@@ -33,6 +34,9 @@ tr.danger {
 }
 tr.warning {
     background-color: var(--warning) !important;
+}
+tr.success {
+    background-color: var(--success) !important;
 }
 input:read-only{
     background: var(--dark-grey);

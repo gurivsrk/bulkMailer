@@ -14,4 +14,9 @@ class newsletter extends Model
 
     protected $guarded = ['id'];
 
+    public function getCompleteTime($id){
+        $updateTime = self::select('updated_at')->where('id',$id)->where('status', 'completed')->first();
+        return $updateTime != null ?$updateTime->updated_at :" ";
+    }
+
 }
