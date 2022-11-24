@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\http\Request;
 use App\Http\Controllers\BulkMailerController;
+use App\Http\Controllers\OpenRateController;
 use App\Http\Controllers\IndexController;
+use App\Models\bulkMailer;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +38,11 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/bulkMailers/{id}/delete',[BulkMailerController::class,'destroy'])->name('deleteEmail');
     Route::get('/deleted-emails',[BulkMailerController::class,'showDeleted'])->name('deletedEmails');
     Route::get('/restore-emails/{id}/restore',[BulkMailerController::class,'restore'])->name('restoreEmail');
+
+    // Test email opening
+
+    Route::get('/image/{newsletter_id}/show',[OpenRateController::class, 'showImage'])->name('emailImage');
+
 });
 
 require __DIR__.'/auth.php';
