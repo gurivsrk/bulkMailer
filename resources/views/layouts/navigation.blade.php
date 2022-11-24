@@ -78,6 +78,18 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('mailList')" :active="request()->routeIs('mailList')">
+                {{ __('Mailing List') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('previousCampaigns')" :active="request()->routeIs('previousCampaigns')">
+                {{ __('All Campaigns') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('sendMail')" :active="request()->routeIs('sendMail')">
+                {{ __('Send Newsletter') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('addEmails')" :active="request()->routeIs('addEmails')">
+                {{ __('Add Mailing List') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

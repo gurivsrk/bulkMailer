@@ -41,11 +41,9 @@ class SendNewsletter implements ShouldQueue
      */
     public function handle(\App\Models\newsletter $newsletter)
     {
-
-
         $daily_limit = 490;
          $counter = 0;
-         $no_of_acc = 2;
+         $no_of_acc = 6;
          $smtp = 1;
          $perHour = ($daily_limit * $no_of_acc) / 24;
          $timeDelay = round(3600/ $perHour);
@@ -107,7 +105,7 @@ class SendNewsletter implements ShouldQueue
                     $smtp = 1;
                 }
             }
-            echo 'hi'.$emailID.'<br>';
+
                 SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$smtp,$timeDelay,count($emails),$totalSend,$newNewsletter)->delay(now()->addSeconds(1));
             $counter++ ;
             $totalSend++;

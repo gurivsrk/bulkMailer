@@ -41,3 +41,18 @@ tr.success {
 input:read-only{
     background: var(--dark-grey);
 }
+
+button[type='submit']{
+    margin-top: 10px;
+}
+@media (max-width: 572px) {
+    .sm-hidden{
+        display: none;
+    }
+    input{
+        width: 275px !important;
+    }
+    .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter{
+        text-align: left;
+    }
+}

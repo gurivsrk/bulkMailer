@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <div id="addForm">
+                    <div id="addForm" class="overflow-x-scroll">
                         <div class="addButton text-right">
                             <a href="{{route('sendMail')}}">
                                 <x-add-button  class="ml-3">
@@ -18,10 +18,10 @@
                             </a>
                         </div>
                         <div class="mailing_list mt-8">
-                            <table id="datatable" class="display ">
+                            <table id="datatable" class="display responsive">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        <th class="sm-hidden">Id</th>
                                         <th>Subject</th>
                                         <th>From</th>
                                         <th>Status</th>
@@ -32,7 +32,7 @@
                                 <tbody>
                                     @foreach ($allCampaign as $campaign)
                                         <tr class="{{$campaign->status == 'sending'? 'warning':($campaign->status == 'completed'? 'success' : '')}}">
-                                            <td>{{$campaign->id}}</td>
+                                            <td class="sm-hidden">{{$campaign->id}}</td>
                                             <td>{{$campaign->Subject}}</td>
                                             <td>{{$campaign->from_name}}</td>
                                             <td class="text-center">{{$campaign->status}}</td>

@@ -12,6 +12,7 @@ $(document).ready(function(){
       $('#datatable').DataTable({
         stateSave: true,
         iDisplayLength:50,
+        responsive: true
       });
 
 
