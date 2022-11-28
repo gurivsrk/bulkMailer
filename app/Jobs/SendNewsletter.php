@@ -13,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
 
 use App\Models\bulkMailer;
 use App\Models\testEmails;
+use App\Models\newsletterMeta;
 
 use Exception;
 
@@ -82,21 +83,31 @@ class SendNewsletter implements ShouldQueue
             $mass = true;
         }
 
-         bulkMailer::where('status','!=','-')->update(['status'=>'-']);
+        bulkMailer::where('status','!=','-')->Subscribed()->update(['status'=>'-']);
 
-        //  $emails = testEmails::select('email','id')->where('status','-')->get();
+        // $emails = testEmails::select('email','id')->where('status','-')->get();
 
+        $cate =  in_array(-12,$categies) ? 'all' : json_encode($categies);
 
+         $newslettermeta = newsletterMeta::create([
+            'campaign_id' =>  $newNewsletter->id,
+            'categories_id' =>$cate,
+            'total_emails' => count($emails)
+         ]);
+
+        foreach($emails as $email){
+            $id = $mass == true ? 'NA' : $email->id;
+            if($id != 'NA'){
+                bulkMailer::where('id',$id)->update(['status'=>'waiting']);
+             }
+        }
         foreach($emails as $email){
 
             $emailID = $mass == true ? $email : $email->email;
             $id = $mass == true ? 'NA' : $email->id;
 
-            $id != 'NA' ?'':bulkMailer::where('id',$id)->update(['status'=>'sending']);
-            if($id != 'NA'){
-               $next = $id + 1;
-               bulkMailer::where('id',$next)->update(['status'=>'waiting']);
-            }
+
+
 
             if($counter == $daily_limit){
                 $counter =1 ;
@@ -105,8 +116,7 @@ class SendNewsletter implements ShouldQueue
                     $smtp = 1;
                 }
             }
-
-                SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$smtp,$timeDelay,count($emails),$totalSend,$newNewsletter)->delay(now()->addSeconds(1));
+                SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$smtp,$timeDelay,count($emails),$totalSend,$newNewsletter,$newslettermeta)->delay(now()->addSeconds(1));
             $counter++ ;
             $totalSend++;
         }

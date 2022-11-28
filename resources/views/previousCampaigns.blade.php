@@ -17,27 +17,42 @@
                                  </x-add-button>
                             </a>
                         </div>
+
                         <div class="mailing_list mt-8">
+
                             <table id="datatable" class="display responsive">
                                 <thead>
                                     <tr>
                                         <th class="sm-hidden">Id</th>
                                         <th>Subject</th>
                                         <th>From</th>
-                                        <th>Status</th>
+                                        <th>Category</th>
                                         <th>Created on</th>
                                         <th>Completed on</th>
+                                        <th>Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+
                                     @foreach ($allCampaign as $campaign)
-                                        <tr class="{{$campaign->status == 'sending'? 'warning':($campaign->status == 'completed'? 'success' : '')}}">
+                                        <tr class="{{$campaign->status == 'sending'? 'warning':''}}">
                                             <td class="sm-hidden">{{$campaign->id}}</td>
                                             <td>{{$campaign->Subject}}</td>
                                             <td>{{$campaign->from_name}}</td>
-                                            <td class="text-center">{{$campaign->status}}</td>
+                                            <td>{{!empty($campaign->categories_id) ? $campaign->getCategoryName($campaign->categories_id) : '-'}}</td>
                                             <td>{{$campaign->created_at}}</td>
                                             <td>{{$campaign->getCompleteTime($campaign->id)}}</td>
+                                            <td class="text-center">
+                                                @if($campaign->send_emails != 0)
+                                                    @php $per = round(($campaign->send_emails/$campaign->total_emails)*100); @endphp
+                                                    @else
+                                                    @php $per =0 ; @endphp
+                                                @endif
+                                                <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                                                    <div class="bg-blue-600 text-xs font-medium  {{ $campaign->status!='completed' ? ($per < 30 ? 'text-blue-900': 'text-blue-100') :'text-blue-100' }} text-center p-0.5 leading-none rounded-full" style=" {{$campaign->status=='completed' ? 'width: 100%' : 'width:'.$per.'%'}}">{{$campaign->status=='completed' ? 'completed' : $per.'%'}}</div>
+                                                </div>
+                                                <span>ⓘ</span>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

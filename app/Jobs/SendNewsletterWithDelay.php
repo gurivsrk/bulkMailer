@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\Newsletter;
 use App\Models\testEmails;
 use App\Models\bulkMailer;
+use App\Models\newsletterMetal;
 
 class SendNewsletterWithDelay implements ShouldQueue
 {
@@ -20,14 +21,22 @@ class SendNewsletterWithDelay implements ShouldQueue
 
     public $timeout = 999;
 
-    private $email,$request,$id,$time_delay,$smtp, $email_count, $total_send, $newNewsletter;
+    private $email,
+    $request,
+    $id,
+    $time_delay,
+    $smtp,
+    $email_count,
+    $total_send,
+    $newNewsletter,
+    $newslettermeta;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($email,$request,$id,$smtp,$timeDelay,$emailCount, $totalSend, $newNewsletter)
+    public function __construct($email,$request,$id,$smtp,$timeDelay,$emailCount, $totalSend, $newNewsletter,$newslettermeta)
     {
         $this->email = $email;
         $this->request = $request;
@@ -37,6 +46,7 @@ class SendNewsletterWithDelay implements ShouldQueue
         $this->email_count =$emailCount;
         $this->total_send =$totalSend;
         $this->newNewsletter =$newNewsletter;
+        $this->newslettermeta = $newslettermeta;
     }
 
     /**
@@ -50,6 +60,7 @@ class SendNewsletterWithDelay implements ShouldQueue
         $fromName = $this->request['from_name'];
         $title = $this->request['title'];
         $message = $this->request['newsletter'];
+        $this->id =='NA' ?'':bulkMailer::where('id',$this->id)->update(['status'=>'sending']);
 
         sleep($this->time_delay);
 
@@ -62,6 +73,9 @@ class SendNewsletterWithDelay implements ShouldQueue
         }
 
         $this->id =='NA' ?'':bulkMailer::where('id',$this->id)->update(['status'=>'success']);
+
+        $this->newslettermeta->update(['send_emails' => $this->total_send]);
+
         if($this->email_count == $this->total_send){
             bulkMailer::where('status','!=','-')->update(['status'=>'-']);
             $this->newNewsletter->update(['status'=>'completed']);

@@ -33,7 +33,9 @@ class IndexController extends Controller
 
      public function previous_campaigns()
      {
-        $allCampaign = newsletter::paginate(10);
+        $allCampaign = newsletter::select('newsletter.id as id','newsletter.Subject as Subject','newsletter.from_name as from_name', 'newsletter.status','newsletter.created_at', 'newsletter_metas.categories_id', 'newsletter_metas.send_emails', 'newsletter_metas.total_emails')
+                        ->leftJoin('newsletter_metas', 'newsletter_metas.campaign_id','newsletter.id')
+                        ->orderBy('id','asc')->paginate(100);
         return view('previousCampaigns',compact('allCampaign'));
      }
 
