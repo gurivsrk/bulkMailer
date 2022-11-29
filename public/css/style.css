@@ -45,6 +45,21 @@ input:read-only{
 button[type='submit']{
     margin-top: 10px;
 }
+.get-info {
+    top: 9px;left: -10px;cursor: pointer
+}
+#partial_show_data{
+    max-height:80vh;
+    padding-top: 10px;
+    outline: 35px solid #fff;
+    outline-offset: -24px;
+}
+.campaigns table.dataTable th,.campaignstable .dataTable tr,.campaigns table.dataTable td{
+    text-align: center;
+}
+@media (max-width: 1090px){.get-info {top: 21px}}
+@media (max-width: 890px){.get-info {top: 33px}}
+
 @media (max-width: 572px) {
     .sm-hidden{
         display: none;

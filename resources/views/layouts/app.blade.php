@@ -97,6 +97,12 @@
                 }
             })
         })
+
     </script>
      @stack('scripts')
+     <script>
+        const closeModel = ({dataId}) =>{
+            document.getElementById(dataId).classList.add("hidden")
+        }
+     </script>
 </html>

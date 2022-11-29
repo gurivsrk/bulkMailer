@@ -39,5 +39,12 @@ class IndexController extends Controller
         return view('previousCampaigns',compact('allCampaign'));
      }
 
+     public function get_data(Request $request){
+        $data = bulkMailer::select('email','status')
+                -> whereIn('category_id',$request->input('id'))
+                ->where('status','!=','-')
+                ->get();
+        return view('partials.showData',compact('data'));
+     }
 
 }

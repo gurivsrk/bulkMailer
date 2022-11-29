@@ -23,9 +23,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
         return view('dashboard');
     })->name('dashboard');
     Route::get('/previous-campaigns',[IndexController::class, 'previous_campaigns'])->name('previousCampaigns');
+    Route::post('/get-data', [IndexController::class,'get_data'])->name('getData');
+
     Route::get('/mailing-list',[IndexController::class, 'mail_list'])->name('mailList');
-
-
 
     Route::get('/send-newsletter/{id}/single',[BulkMailerController::class,'singleEmail'])->whereNumber('id')->name('singleEmail');
     Route::get('/send-newsletter',[BulkMailerController::class,'index'])->name('sendMail');
