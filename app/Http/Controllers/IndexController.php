@@ -51,4 +51,10 @@ class IndexController extends Controller
         return view('partials.showData',compact('data'));
      }
 
+     public function single_row(Request $request){
+         $emails = bulkMailer::where('email','LIKE','%'.$request->post('input').'%')->get();
+
+         return view('partials.mailList',compact(['emails']));
+     }
+
 }

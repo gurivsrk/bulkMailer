@@ -17,8 +17,7 @@ use App\Models\bulkMailer;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('preview',[OpenRateController::class,function(){
-    return view('unsubscribe');
+Route::get('preview',[OpenRateController::class,function(){return view('unsubscribe');
     //return new App\Mail\Newsletter(base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'));
 }]);
 Route::get('/unsubscribe/{email}',[OpenRateController::class, 'unsubscribe'])->name('unsubscribe');
@@ -33,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('/get-data', [IndexController::class,'get_data'])->name('getData');
 
     Route::get('/mailing-list',[IndexController::class, 'mail_list'])->name('mailList');
+    Route::post('/single-row',[IndexController::class, 'single_row'])->name('getSingleMail');
 
     Route::get('/send-newsletter/{id}/single',[BulkMailerController::class,'singleEmail'])->whereNumber('id')->name('singleEmail');
     Route::post('/send-newsletter-single',[BulkMailerController::class,'singleEmail'])->name('SendSingleEmail');
