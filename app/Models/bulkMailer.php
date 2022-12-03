@@ -13,6 +13,7 @@ class bulkMailer extends Model
 
     protected $table = 'emails';
 
+
     protected $guarded = ['id'];
 
     public function scopeNotSend($query){

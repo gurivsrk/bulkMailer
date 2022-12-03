@@ -106,9 +106,6 @@ class SendNewsletter implements ShouldQueue
             $emailID = $mass == true ? $email : $email->email;
             $id = $mass == true ? 'NA' : $email->id;
 
-
-
-
             if($counter == $daily_limit){
                 $counter =1 ;
                 ++$smtp;

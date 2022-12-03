@@ -17,6 +17,13 @@ use App\Models\bulkMailer;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('preview',[OpenRateController::class,function(){
+    return view('unsubscribe');
+    //return new App\Mail\Newsletter(base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'));
+}]);
+Route::get('/unsubscribe/{email}',[OpenRateController::class, 'unsubscribe'])->name('unsubscribe');
+Route::post('/unsubscribe',[OpenRateController::class, 'unsubscribe'])->name('unsubscribeAjax');
+
 
 Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/', function () {
@@ -28,6 +35,8 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/mailing-list',[IndexController::class, 'mail_list'])->name('mailList');
 
     Route::get('/send-newsletter/{id}/single',[BulkMailerController::class,'singleEmail'])->whereNumber('id')->name('singleEmail');
+    Route::post('/send-newsletter-single',[BulkMailerController::class,'singleEmail'])->name('SendSingleEmail');
+
     Route::get('/send-newsletter',[BulkMailerController::class,'index'])->name('sendMail');
     Route::post('/bulkMailers',[BulkMailerController::class,'store'])->name('sendMailPost');
     Route::post('/ajax/mail-data-update',[BulkMailerController::class,'update'])->name('sendMailData');
@@ -40,8 +49,6 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/restore-emails/{id}/restore',[BulkMailerController::class,'restore'])->name('restoreEmail');
 
     // Test email opening
-
-    Route::get('/image/{newsletter_id}/show',[OpenRateController::class, 'showImage'])->name('emailImage');
 
 });
 

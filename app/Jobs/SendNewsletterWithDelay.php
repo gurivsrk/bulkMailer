@@ -64,13 +64,9 @@ class SendNewsletterWithDelay implements ShouldQueue
 
         sleep($this->time_delay);
 
-        if($this->smtp == 1){
-             Mail::to($this->email)->send(new Newsletter( $fromName, $title, $message ));
-        }
-        else{
-            $ss = 'smtp'.$this->smtp;
-            Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message ));
-        }
+        $ss = ($this->smtp == 1) ? 'smtp': 'smtp'.$this->smtp;
+
+        Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
 
         $this->id =='NA' ?'':bulkMailer::where('id',$this->id)->update(['status'=>'success']);
 

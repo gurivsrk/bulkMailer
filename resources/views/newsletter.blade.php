@@ -15,7 +15,7 @@
                             </x-add-button>
                         </a>
                     </div>
-                    <form method="POST" action="{{ route('sendMailPost') }}">
+                    <form method="POST" action="{{ @$isSingle ? route('SendSingleEmail') :route('sendMailPost') }}">
                         @csrf
                         <!-- Email Address -->
                         <div class="block mt-4">

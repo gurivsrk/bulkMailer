@@ -46,7 +46,22 @@ button[type='submit']{
     margin-top: 10px;
 }
 .get-info {
-    top: 9px;left: -10px;cursor: pointer
+    top: 14px;left: -10px;cursor: pointer
+}
+#searchEmail{
+    width: 450px;
+    max-width: 100%;
+    float: right;
+}
+.custom-table thead{
+    border-bottom: 2px solid #c1c1c1;
+}
+.custom-table tr:nth-child(even){
+    background:#f9f9f9;
+}
+.custom-table td, .custom-table th{
+    padding: 8px 10px;
+    text-align: center;
 }
 #partial_show_data{
     max-height:80vh;

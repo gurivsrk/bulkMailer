@@ -16,6 +16,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Traits\SendMail;
 use App\Mail\Newsletter;
 
+use Exception;
 class BulkMailerController extends Controller
 {
 
@@ -34,12 +35,24 @@ class BulkMailerController extends Controller
         return view('newsletter',compact(['categories']));
     }
 
-    public function singleEmail(bulkMailer $bulkMailer, $id){
+    public function singleEmail(Request $request, bulkMailer $bulkMailer, $id=null){
+        if($request->isMethod('post')){
+            try{
+                foreach($request->post('category_name') as $email){
+                    mail::mailer('singleMailer')->to($email)->send(new Newsletter($request->post('from_name'), $request->post('title'), $request->post('newsletter'), $request->post('category_name')[0]));
+                }
+                $msg = 'Successfully Send Emails';
+                echo $msg;
+            }
+            catch(Exception $err){
+                print_r($err);
+            }
+
+            return redirect()->back()->with('success',$msg);
+        }
         $isSingle = true;
         $categories = $bulkMailer->where('id',$id)->limit(1)->get();
         return view('newsletter',compact(['categories','isSingle']));
-        //dd($categories->email);
-        // mail::mailer('smtp2')->to($categories[0]->email)->send(new Newsletter('localhost@gmail.com','single test','testing mail function'));
      }
 
     /**

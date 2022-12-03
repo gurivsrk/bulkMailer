@@ -30,7 +30,7 @@ class newsletter extends Model
             $j = json_decode($ids);
             foreach($j as $id){
                 $title = category::select('title')->where('id',$id)->first();
-                $titles[] = $title->title;
+                $titles[] = $title ? $title->title: json_decode($ids);
             }
         }
         return json_encode($titles);

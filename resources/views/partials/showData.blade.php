@@ -1,5 +1,7 @@
-<div id="partial_show_data" class="relative bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10 h-auto max-h-5/6 overflow-hidden overflow-y-scroll ">
-    <div class="close absolute top-0 right-0 cursor-pointer font-black text-xl" onclick="closeModel({dataId:'showData'})">X</div>
+<div id="modelInfo-x">
+    <div class="close absolute top-0 right-0 cursor-pointer font-black text-xl text-white bg-red-700 py-1 px-3 m-1" onclick="closeModel({dataId:'showData'})">X</div>
+</div>
+<div id="partial_show_data" class="relative bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-xl sm:rounded-lg sm:px-10 h-auto max-h-5/6 overflow-hidden overflow-y-scroll ">
     <div class="mx-auto max-w-md">
       <div class="divide-y divide-gray-300/50">
         <div class="space-y-6 py-8 text-base leading-7 text-gray-600">

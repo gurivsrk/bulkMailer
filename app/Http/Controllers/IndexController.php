@@ -40,10 +40,14 @@ class IndexController extends Controller
      }
 
      public function get_data(Request $request){
-        $data = bulkMailer::select('email','status')
-                -> whereIn('category_id',$request->input('id'))
-                ->where('status','!=','-')
-                ->get();
+         if($request->input('id') == 'all'){
+            $data = bulkMailer::select('email','status')->where('status','!=','-')->get();
+         }else{
+             $data = bulkMailer::select('email','status')
+             -> whereIn('category_id',json_decode($request->input('id')))
+             ->where('status','!=','-')
+             ->get();
+         }
         return view('partials.showData',compact('data'));
      }
 

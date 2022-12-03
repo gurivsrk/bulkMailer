@@ -21,7 +21,7 @@
                     <x-nav-link :href="route('previousCampaigns')" :active="request()->routeIs('previousCampaigns')">
                         {{ __('All Campaigns') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('sendMail')" :active="request()->routeIs('sendMail')">
+                    <x-nav-link :href="route('sendMail')" :active="request()->routeIs('sendMail') ? request()->routeIs('sendMail'):request()->routeIs('singleEmail')">
                         {{ __('Send Newsletter') }}
                     </x-nav-link>
                     <x-nav-link :href="route('addEmails')" :active="request()->routeIs('addEmails')">
