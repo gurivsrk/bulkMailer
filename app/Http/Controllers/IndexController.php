@@ -52,7 +52,10 @@ class IndexController extends Controller
      }
 
      public function single_row(Request $request){
-         $emails = bulkMailer::where('email','LIKE','%'.$request->post('input').'%')->get();
+
+        $i = category::select('id')->where('title','LIKE','%'.$request->post('input').'%')->first();
+        $id = $i ? $i->id : '';
+         $emails = bulkMailer::where('email','LIKE','%'.$request->post('input').'%')->orWhere('type','LIKE','%'.$request->post('input').'%')->orWhere('category_id',$id)->get();
 
          return view('partials.mailList',compact(['emails']));
      }

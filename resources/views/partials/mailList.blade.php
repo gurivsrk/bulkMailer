@@ -3,7 +3,7 @@
         <tr>
             <th class="sm-hidden">Id</th>
             <th>Email</th>
-            <th>type</th>
+            <th>Type</th>
             <th class="sm-hidden">Status</th>
             <th>Category</th>
             <th>Actions</th>

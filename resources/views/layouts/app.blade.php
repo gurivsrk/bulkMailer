@@ -44,9 +44,38 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/select/1.5.0/js/dataTables.select.min.js"></script>
     <script src="{{asset('/js/main.js')}}"></script>
+     @stack('scripts')
+     <script>
+        const closeModel = ({dataId}) =>{
+            document.getElementById(dataId).classList.add("hidden")
+        }
 
-    <script>
-        $(document).ready(function(){
+        const changeInput = () => {
+                $('.tableInput').on('change',function(){
+                    if(confirm('sure to change')){
+                        const id = $(this).attr('data-id'),
+                        input= $(this).val(),
+                        $this = $(this),
+                        type = $(this).attr('data-type');
+                        $.ajax({
+                            type:'post',
+                            url: '{{route("sendMailData")}}',
+                            headers :{ 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                            data : {id, input, type},
+                            success: function(result){
+                                if(type == 'type'){
+                                    const NewClass = input == 'pending' ? 'warning' :  ( input == 'unsubscribed'? 'danger': '' );
+                                    $this.parent().parent().removeClass('warning').removeClass('danger').addClass(NewClass)
+                                }
+
+                                customAlert('alert',"updated successfully")
+                            }
+                        })
+                    }
+                })
+            }
+            changeInput()
+
             const customAlert = (id, msg ,type = 'success') =>{
                 let msgArray = [], rawMsg = [], bg = '#198754'
                 if(type =='errors'){
@@ -74,35 +103,5 @@
             customAlert('alert','{!!Session::get("fail")!!}','errors')
             @endif
 
-            $('.tableInput').on('change', function(){
-                if(confirm('sure to change')){
-                    const id = $(this).attr('data-id'),
-                    input= $(this).val(),
-                    $this = $(this),
-                    type = $(this).attr('data-type');
-                    $.ajax({
-                        type:'post',
-                        url: '{{route("sendMailData")}}',
-                        headers :{ 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
-                        data : {id, input, type},
-                        success: function(result){
-                            if(type == 'type'){
-                                const NewClass = input == 'pending' ? 'warning' :  ( input == 'unsubscribed'? 'danger': '' );
-                                $this.parent().parent().removeClass('warning').removeClass('danger').addClass(NewClass)
-                            }
-
-                            customAlert('alert',"updated successfully")
-                        }
-                    })
-                }
-            })
-        })
-
-    </script>
-     @stack('scripts')
-     <script>
-        const closeModel = ({dataId}) =>{
-            document.getElementById(dataId).classList.add("hidden")
-        }
      </script>
 </html>
