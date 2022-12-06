@@ -17,12 +17,10 @@ use App\Jobs\test;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('testQueue',[OpenRateController::class,function(){
-    test::dispatch();
-}]);
-Route::get('preview',[OpenRateController::class,function(){return view('unsubscribe');
-    //return new App\Mail\Newsletter(base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'));
-}]);
+// Route::get('testQueue',[OpenRateController::class,function(){
+//     test::dispatch();
+// }]);
+Route::get('preview',[OpenRateController::class,function(){return view('unsubscribe');}]);
 Route::get('/unsubscribe/{email}',[OpenRateController::class, 'unsubscribe'])->name('unsubscribe');
 Route::post('/unsubscribe',[OpenRateController::class, 'unsubscribe'])->name('unsubscribeAjax');
 
