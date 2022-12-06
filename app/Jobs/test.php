@@ -30,11 +30,14 @@ class test implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(\App\Models\Test $Test)
     {
         for($i=0; $i<100; $i++){
 
-            Test2::dispatch($i)->delay(now()->addSeconds(2));
+            sleep(2);
+            $Test->create([
+                'data' => $this->id
+            ]);
 
         }
     }

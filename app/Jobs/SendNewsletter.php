@@ -12,9 +12,10 @@ use Illuminate\Queue\SerializesModels;
 
 
 use App\Models\bulkMailer;
-use App\Models\testEmails;
+use App\Models\SendingMail;
 use App\Models\newsletterMeta;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Newsletter;
 use Exception;
 
 class SendNewsletter implements ShouldQueue
@@ -43,13 +44,9 @@ class SendNewsletter implements ShouldQueue
     public function handle(\App\Models\newsletter $newsletter)
     {
         $daily_limit = 490;
-         $counter = 0;
-         $no_of_acc = 6;
-         $smtp = 1;
-         $perHour = ($daily_limit * $no_of_acc) / 24;
-         $timeDelay = round(3600/ $perHour);
-
-         $totalSend = 1;
+        $no_of_acc = 6;
+        $perHour = ($daily_limit * $no_of_acc) / 24;
+        $timeDelay = round(3600/ $perHour);
 
         $categies = $this->request['category_name'];
         $isNum= '';
@@ -105,17 +102,8 @@ class SendNewsletter implements ShouldQueue
 
             $emailID = $mass == true ? $email : $email->email;
             $id = $mass == true ? 'NA' : $email->id;
+            SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$daily_limit,$no_of_acc, count($emails),$timeDelay,$newNewsletter,$newslettermeta);
 
-            if($counter == $daily_limit){
-                $counter =1 ;
-                ++$smtp;
-                if($no_of_acc < $smtp){
-                    $smtp = 1;
-                }
-            }
-                SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$smtp,$timeDelay,count($emails),$totalSend,$newNewsletter,$newslettermeta)->delay(now()->addSeconds(1));
-            $counter++ ;
-            $totalSend++;
         }
 
 

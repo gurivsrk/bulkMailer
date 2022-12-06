@@ -11,9 +11,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
 use App\Mail\Newsletter;
-use App\Models\testEmails;
 use App\Models\bulkMailer;
-use App\Models\newsletterMetal;
+use App\Models\SendingMail;
 
 class SendNewsletterWithDelay implements ShouldQueue
 {
@@ -25,9 +24,9 @@ class SendNewsletterWithDelay implements ShouldQueue
     $request,
     $id,
     $time_delay,
-    $smtp,
+    $daily_limit,
     $email_count,
-    $total_send,
+    $no_of_acc,
     $newNewsletter,
     $newslettermeta;
 
@@ -36,15 +35,15 @@ class SendNewsletterWithDelay implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($email,$request,$id,$smtp,$timeDelay,$emailCount, $totalSend, $newNewsletter,$newslettermeta)
+    public function __construct($email,$request,$id,$daily_limit, $no_of_acc, $emailCount, $timeDelay, $newNewsletter,$newslettermeta)
     {
         $this->email = $email;
         $this->request = $request;
         $this->id = $id;
-        $this->smtp = $smtp;
+        $this->daily_limit = $daily_limit;
         $this->time_delay =$timeDelay;
-        $this->email_count =$emailCount;
-        $this->total_send =$totalSend;
+        $this->email_count = $emailCount;
+        $this->no_of_acc =$no_of_acc;
         $this->newNewsletter =$newNewsletter;
         $this->newslettermeta = $newslettermeta;
     }
@@ -57,6 +56,17 @@ class SendNewsletterWithDelay implements ShouldQueue
     public function handle()
     {
 
+        $counter = 0;
+        $smtp = 1;
+
+         if($counter == $this->daily_limit){
+            $counter = 1 ;
+            ++$smtp;
+            if($this->no_of_acc < $smtp){
+                $smtp = 1;
+            }
+        }
+
         $fromName = $this->request['from_name'];
         $title = $this->request['title'];
         $message = $this->request['newsletter'];
@@ -64,17 +74,25 @@ class SendNewsletterWithDelay implements ShouldQueue
 
         sleep($this->time_delay);
 
-        $ss = ($this->smtp == 1) ? 'smtp': 'smtp'.$this->smtp;
+        $ss = ($smtp == 1) ? 'smtp': 'smtp'.$smtp;
 
         Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
 
         $this->id =='NA' ?'':bulkMailer::where('id',$this->id)->update(['status'=>'success']);
 
-        $this->newslettermeta->update(['send_emails' => $this->total_send]);
+        $sending = SendingMail::create([
+            'email'=>$this->email,
+            'campaign_id' =>$this->newNewsletter->id
+        ]);
 
-        if($this->email_count == $this->total_send){
+        $counter = $sending->where('campaign_id',$this->newNewsletter->id)->count();
+
+        $this->newslettermeta->update(['send_emails' => $counter]);
+
+        if($this->email_count == $counter){
             bulkMailer::where('status','!=','-')->update(['status'=>'-']);
             $this->newNewsletter->update(['status'=>'completed']);
+            //SendingMail::truncate();
         }
     }
 }
