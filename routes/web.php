@@ -6,7 +6,7 @@ use App\Http\Controllers\BulkMailerController;
 use App\Http\Controllers\OpenRateController;
 use App\Http\Controllers\IndexController;
 use App\Models\bulkMailer;
-
+use App\Jobs\test;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +17,9 @@ use App\Models\bulkMailer;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('testQueue',[OpenRateController::class,function(){
+    test::dispatch();
+}]);
 Route::get('preview',[OpenRateController::class,function(){return view('unsubscribe');
     //return new App\Mail\Newsletter(base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'),base64_decode('gursharan@vsrkcapital.com'));
 }]);
