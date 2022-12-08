@@ -50,7 +50,7 @@ class SendNewsletterWithDelay implements ShouldQueue
         $this->newslettermeta = $newslettermeta;
         $this->smtp = $smtp;
         $this->counter = $counter;
-        set_time_limit(20);
+        // set_time_limit(20);
     }
 
     /**
@@ -60,18 +60,18 @@ class SendNewsletterWithDelay implements ShouldQueue
      */
     public function handle()
     {
-        set_time_limit(20);
+        // set_time_limit(20);
 
         $fromName = $this->request['from_name'];
         $title = $this->request['title'];
         $message = $this->request['newsletter'];
         $this->id =='NA' ?'':bulkMailer::where('id',$this->id)->update(['status'=>'sending']);
 
-        //sleep($this->time_delay);
+        sleep($this->time_delay);
 
         $ss = ($this->smtp == 1) ? 'smtp': 'smtp'.$this->smtp;
 
-       // Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
+       Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
 
         $this->id =='NA' ?'':bulkMailer::where('id',$this->id)->update(['status'=>'success']);
 

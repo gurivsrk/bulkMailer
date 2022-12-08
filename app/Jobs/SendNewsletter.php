@@ -118,7 +118,5 @@ class SendNewsletter implements ShouldQueue
             SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$daily_limit,$no_of_acc, count($emails),$timeDelay,$newNewsletter,$newslettermeta, $smtp,$counter);
             $counter++;
         }
-
-
     }
 }
