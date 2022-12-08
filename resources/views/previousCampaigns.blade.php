@@ -50,7 +50,7 @@
                                                 @if($campaign->send_emails || $campaign->total_emails)
                                                   <div class="text-xs">{{$campaign->send_emails.'/'.$campaign->total_emails}}</div>
                                                 @endif
-                                                <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                                                <div class="w-full {{$campaign->status == 'fail'?'bg-red-200':'bg-gray-200'}} rounded-full dark:bg-gray-700">
                                                         <div class="{{$campaign->status == 'fail'?'bg-red-600':'bg-blue-600'}} text-xs font-medium  {{ $campaign->status!='completed' && $campaign->status != 'fail' ? ($per < 30 ? 'text-blue-900': 'text-blue-100') :'text-blue-100' }} text-center p-0.5 leading-none rounded-full" style=" {{$campaign->status=='completed' && $campaign->status != 'fail'? 'width: 100%' : 'width:'.$per.'%'}}">{{$campaign->status=='completed' ? 'completed' : ($campaign->status == 'fail' ? 'failed' :$per.'%')}}</div>
                                                 </div>
                                                 @if($campaign->status!='completed' && $campaign->status != 'fail')
