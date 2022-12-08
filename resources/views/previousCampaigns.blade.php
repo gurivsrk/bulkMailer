@@ -51,9 +51,9 @@
                                                   <div class="text-xs">{{$campaign->send_emails.'/'.$campaign->total_emails}}</div>
                                                 @endif
                                                 <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-                                                    <div class="bg-blue-600 text-xs font-medium  {{ $campaign->status!='completed' ? ($per < 30 ? 'text-blue-900': 'text-blue-100') :'text-blue-100' }} text-center p-0.5 leading-none rounded-full" style=" {{$campaign->status=='completed' ? 'width: 100%' : 'width:'.$per.'%'}}">{{$campaign->status=='completed' ? 'completed' : $per.'%'}}</div>
+                                                        <div class="{{$campaign->status == 'fail'?'bg-red-600':'bg-blue-600'}} text-xs font-medium  {{ $campaign->status!='completed' && $campaign->status != 'fail' ? ($per < 30 ? 'text-blue-900': 'text-blue-100') :'text-blue-100' }} text-center p-0.5 leading-none rounded-full" style=" {{$campaign->status=='completed' && $campaign->status != 'fail'? 'width: 100%' : 'width:'.$per.'%'}}">{{$campaign->status=='completed' ? 'completed' : ($campaign->status == 'fail' ? 'failed' :$per.'%')}}</div>
                                                 </div>
-                                                @if($campaign->status!='completed')
+                                                @if($campaign->status!='completed' && $campaign->status != 'fail')
                                                     <span class="absolute get-info" onclick="getData({'id':'{{$campaign->categories_id}}'})" >ⓘ</span>
                                                 @endif
                                             </td>
