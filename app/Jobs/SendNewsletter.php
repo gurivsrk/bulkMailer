@@ -48,6 +48,10 @@ class SendNewsletter implements ShouldQueue
         $perHour = ($daily_limit * $no_of_acc) / 24;
         $timeDelay = round(3600/ $perHour);
 
+        $smtp=1;
+
+        $counter = 1;
+
         $categies = $this->request['category_name'];
         $isNum= '';
         $fromName = $this->request['from_name'];
@@ -93,17 +97,26 @@ class SendNewsletter implements ShouldQueue
          ]);
 
         foreach($emails as $email){
+
             $id = $mass == true ? 'NA' : $email->id;
             if($id != 'NA'){
                 bulkMailer::where('id',$id)->update(['status'=>'waiting']);
              }
         }
+
         foreach($emails as $email){
 
+            if($daily_limit == $counter){
+                ++$smtp;
+                $counter = 1 ;
+                if($no_of_acc < $smtp){
+                    $smtp = 1;
+                }
+            }
             $emailID = $mass == true ? $email : $email->email;
             $id = $mass == true ? 'NA' : $email->id;
-            SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$daily_limit,$no_of_acc, count($emails),$timeDelay,$newNewsletter,$newslettermeta);
-
+            SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$daily_limit,$no_of_acc, count($emails),$timeDelay,$newNewsletter,$newslettermeta, $smtp,$counter);
+            $counter++;
         }
 
 

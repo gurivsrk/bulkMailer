@@ -9,6 +9,6 @@ class SendingMail extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['email','campaign_id'];
+    protected $fillable = ['email','campaign_id','smtp'];
 
 }

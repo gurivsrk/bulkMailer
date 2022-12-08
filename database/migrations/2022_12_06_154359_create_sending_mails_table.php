@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('email',255);
             $table->integer('campaign_id');
+            $table->string('smtp',50);
             $table->timestamps();
         });
     }

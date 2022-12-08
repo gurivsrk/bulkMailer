@@ -28,14 +28,16 @@ class SendNewsletterWithDelay implements ShouldQueue
     $email_count,
     $no_of_acc,
     $newNewsletter,
-    $newslettermeta;
+    $newslettermeta,
+    $smtp,
+    $counter;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($email,$request,$id,$daily_limit, $no_of_acc, $emailCount, $timeDelay, $newNewsletter,$newslettermeta)
+    public function __construct($email,$request,$id,$daily_limit, $no_of_acc, $emailCount, $timeDelay, $newNewsletter,$newslettermeta,$smtp,$counter)
     {
         $this->email = $email;
         $this->request = $request;
@@ -46,6 +48,9 @@ class SendNewsletterWithDelay implements ShouldQueue
         $this->no_of_acc =$no_of_acc;
         $this->newNewsletter =$newNewsletter;
         $this->newslettermeta = $newslettermeta;
+        $this->smtp = $smtp;
+        $this->counter = $counter;
+        set_time_limit(20);
     }
 
     /**
@@ -55,34 +60,25 @@ class SendNewsletterWithDelay implements ShouldQueue
      */
     public function handle()
     {
-
-        $counter = 0;
-        $smtp = 1;
-
-         if($counter == $this->daily_limit){
-            $counter = 1 ;
-            ++$smtp;
-            if($this->no_of_acc < $smtp){
-                $smtp = 1;
-            }
-        }
+        set_time_limit(20);
 
         $fromName = $this->request['from_name'];
         $title = $this->request['title'];
         $message = $this->request['newsletter'];
         $this->id =='NA' ?'':bulkMailer::where('id',$this->id)->update(['status'=>'sending']);
 
-        sleep($this->time_delay);
+        //sleep($this->time_delay);
 
-        $ss = ($smtp == 1) ? 'smtp': 'smtp'.$smtp;
+        $ss = ($this->smtp == 1) ? 'smtp': 'smtp'.$this->smtp;
 
-        Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
+       // Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
 
         $this->id =='NA' ?'':bulkMailer::where('id',$this->id)->update(['status'=>'success']);
 
         $sending = SendingMail::create([
             'email'=>$this->email,
-            'campaign_id' =>$this->newNewsletter->id
+            'campaign_id' =>$this->newNewsletter->id,
+            'smtp' =>$this->smtp.'-counter--'.$this->counter.'--Daily--'.$this->daily_limit.'--acc--'.$this->no_of_acc
         ]);
 
         $counter = $sending->where('campaign_id',$this->newNewsletter->id)->count();
@@ -94,5 +90,6 @@ class SendNewsletterWithDelay implements ShouldQueue
             $this->newNewsletter->update(['status'=>'completed']);
             //SendingMail::truncate();
         }
+
     }
 }
