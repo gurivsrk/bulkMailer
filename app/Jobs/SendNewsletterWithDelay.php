@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -65,18 +64,23 @@ class SendNewsletterWithDelay implements ShouldQueue
         $message = $this->request['newsletter'];
         $this->id =='NA' ?'':$bulkMailer->where('id',$this->id)->update(['status'=>'sending']);
 
-        sleep(5);
+        sleep($this->time_delay);
 
         $ss = ($this->smtp == 1) ? 'smtp': 'smtp'.$this->smtp;
 
-    //    $mail->mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
+       $mail->mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
 
         $this->id =='NA' ?'':$bulkMailer->where('id',$this->id)->update(['status'=>'success']);
 
         $sending = SendingMail::create([
             'email'=>$this->email,
             'campaign_id' =>$this->newNewsletter->id,
-            'smtp' =>$this->smtp.'-counter--'.$this->counter.'--Daily--'.$this->daily_limit.'--acc--'.$this->no_of_acc
+            'smtp' => serialize([
+                'Smtp no.' => $this->smtp,
+                'Counter' => $this->counter,
+                'Daily limit'=> $this->daily_limit,
+                'No. of accounts' => $this->no_of_acc
+            ])
         ]);
 
         $counter = $sending->where('campaign_id',$this->newNewsletter->id)->count();
