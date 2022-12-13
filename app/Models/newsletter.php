@@ -17,7 +17,7 @@ class newsletter extends Model
     protected $guarded = ['id'];
 
     public function getCompleteTime($id){
-        $updateTime = $this->select('updated_at')->where('id',$id)->where('status', 'completed')->first();
+        $updateTime = $this->select('updated_at')->where('id',$id)->where('status','<>' ,'sending')->first();
         return $updateTime != null ? $updateTime->updated_at :" ";
     }
 

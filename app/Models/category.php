@@ -17,6 +17,6 @@ class category extends Model
     protected $fillable = ['title'];
 
     public function getEmailsCount($id){
-       return bulkMailer::where('category_id',$id)->count();
+       return bulkMailer::where('category_id',$id)->where('type','subscribed')->count();
     }
 }

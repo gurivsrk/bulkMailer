@@ -90,7 +90,7 @@
                     bg = '#ffc107'
                 }
                 $('#'+id+' ul').html(msg)
-                $('#'+id).css({'background': bg}).fadeIn().delay(6000).fadeOut()
+                $('#'+id).css({'background': bg}).fadeIn().delay(6000).fadeOut(3000)
 
             }
             @if(Session::has('success'))

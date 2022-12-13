@@ -1,24 +1,7 @@
-:root{
-    --danger: #ffe0e2;
-    --dark-grey: #e4e4e4;
-    --warning: #fffae0;
-    --green: #198754;
-    --success: #e0ffe9;
-}
-.bulkMailerAlert{
-    position: fixed;
-    right: 0;
-    top: 50px;
-    padding: 5px 20px;
-    background: var(--green);
-    box-shadow: 0 0 10px var(--dark-grey);
-    color: #fff;
-    font-size: 18px;
-    display: none;
-}
-#alert li{
-    text-transform: lowercase;
-}
+:root{--danger: #ffe0e2;--dark-grey: #e4e4e4;--warning: #fffae0;--green: #198754;--success: #e0ffe9;}
+.bulkMailerAlert{position: fixed;right: 0;top: 50px;padding: 15px 20px;background: var(--green);
+    box-shadow: 0 0 10px var(--dark-grey);color: #fff;font-size: 18px;display: none;border-radius: 60px}
+#alert li{text-transform: lowercase}
 .tableInput{
     padding: 2px 10px !important;
     background: var(--dark-grey);

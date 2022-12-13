@@ -13,6 +13,8 @@ use App\Mail\Newsletter;
 use App\Models\bulkMailer;
 use App\Models\SendingMail;
 
+use Exception;
+
 class SendNewsletterWithDelay implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -58,7 +60,7 @@ class SendNewsletterWithDelay implements ShouldQueue
      */
     public function handle(bulkMailer $bulkMailer)
     {
-
+        try{
         $fromName = $this->request['from_name'];
         $title = $this->request['title'];
         $message = $this->request['newsletter'];
@@ -68,9 +70,9 @@ class SendNewsletterWithDelay implements ShouldQueue
 
         $ss = ($this->smtp == 1) ? 'smtp': 'smtp'.$this->smtp;
 
+        // $mail->mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
         Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
         $this->id =='NA' ?'':$bulkMailer->where('id',$this->id)->update(['status'=>'success']);
-
 
         $sending = SendingMail::create([
             'email'=>$this->email,
@@ -92,8 +94,28 @@ class SendNewsletterWithDelay implements ShouldQueue
             $this->newNewsletter->update(['status'=>'completed']);
             //SendingMail::truncate();
         }
+    }
+    catch(Exception $e){
 
+        $this->id =='NA' ?'':$bulkMailer->where('id',$this->id)->update(['status'=>'fail']);
 
+        $sending = SendingMail::create([
+            'email'=>$this->email,
+            'campaign_id' =>$this->newNewsletter->id,
+            'smtp' => 'fail'
+        ]);
+
+        $counter = $sending->where('campaign_id',$this->newNewsletter->id)->count();
+        $this->newslettermeta->update(['send_emails' => $counter]);
+
+        if($this->email_count == $counter){
+            $check = $sending->where('campaign_id',$this->newNewsletter->id)->where('smtp','fail')->count();
+            if($this->email_count == $check){
+                $bulkMailer->where('status','!=','-')->update(['status'=>'-']);
+                $this->newNewsletter->update(['status'=>'fail']);
+            }
+        }
+    }
 
     }
 }
