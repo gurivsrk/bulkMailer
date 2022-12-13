@@ -56,7 +56,7 @@ class SendNewsletterWithDelay implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Mail $mail, bulkMailer $bulkMailer)
+    public function handle(bulkMailer $bulkMailer)
     {
 
         $fromName = $this->request['from_name'];
@@ -68,9 +68,9 @@ class SendNewsletterWithDelay implements ShouldQueue
 
         $ss = ($this->smtp == 1) ? 'smtp': 'smtp'.$this->smtp;
 
-       $mail->mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
-
+        Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
         $this->id =='NA' ?'':$bulkMailer->where('id',$this->id)->update(['status'=>'success']);
+
 
         $sending = SendingMail::create([
             'email'=>$this->email,
@@ -92,6 +92,8 @@ class SendNewsletterWithDelay implements ShouldQueue
             $this->newNewsletter->update(['status'=>'completed']);
             //SendingMail::truncate();
         }
+
+
 
     }
 }
