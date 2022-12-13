@@ -12,11 +12,9 @@ use Illuminate\Queue\SerializesModels;
 
 
 use App\Models\bulkMailer;
-use App\Models\SendingMail;
+use App\Models\testEmails;
 use App\Models\newsletterMeta;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\Newsletter;
-use Exception;
+
 
 class SendNewsletter implements ShouldQueue
 {
@@ -41,7 +39,7 @@ class SendNewsletter implements ShouldQueue
      *
      * @return void
      */
-    public function handle(\App\Models\newsletter $newsletter)
+    public function handle(\App\Models\newsletter $newsletter, bulkMailer $bulkMailer)
     {
         $daily_limit = 490;
         $no_of_acc = 6;
@@ -72,10 +70,10 @@ class SendNewsletter implements ShouldQueue
 
         if($isNum){
             if(in_array(-12,$categies)){
-                $emails = bulkMailer::Subscribed()->get();
+                $emails = $bulkMailer->Subscribed()->get();
             }
             else{
-                $emails = bulkMailer::Subscribed()->whereIn('category_id',$categies)->get();
+                $emails = $bulkMailer->Subscribed()->whereIn('category_id',$categies)->get();
             }
             $mass = false;
         }
@@ -84,7 +82,7 @@ class SendNewsletter implements ShouldQueue
             $mass = true;
         }
 
-        bulkMailer::where('status','!=','-')->Subscribed()->update(['status'=>'-']);
+        $bulkMailer->where('status','!=','-')->Subscribed()->update(['status'=>'-']);
 
         // $emails = testEmails::select('email','id')->where('status','-')->get();
 
@@ -100,7 +98,7 @@ class SendNewsletter implements ShouldQueue
 
             $id = $mass == true ? 'NA' : $email->id;
             if($id != 'NA'){
-                bulkMailer::where('id',$id)->update(['status'=>'waiting']);
+                $bulkMailer->where('id',$id)->update(['status'=>'waiting']);
              }
         }
 
