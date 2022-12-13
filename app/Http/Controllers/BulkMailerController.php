@@ -31,6 +31,7 @@ class BulkMailerController extends Controller
      */
     public function index(category $category)
     {
+
         $categories = $category->select('title','id')->orderBy('id','desc')->get();
         return view('newsletter',compact(['categories']));
     }
@@ -131,7 +132,10 @@ class BulkMailerController extends Controller
      */
     public function store(StorebulkMailerRequest $request)
     {
-
+        if(count($request->post('category_name')) <= 1){
+            $id =  $request->post('category_name')[0];
+            if(bulkMailer::where('category_id',$id)->count() <1 ) return redirect()->back()->with('fail','No Email is assign to this category') ;
+        }
         $this->Email($request->all());
         return redirect()->back()->with('success','Successfully Send Emails');
     }
