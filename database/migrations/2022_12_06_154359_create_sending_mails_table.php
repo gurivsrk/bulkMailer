@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email',255);
             $table->integer('campaign_id');
             $table->mediumText('smtp');
+            $table->mediumText('error')->nullable();
             $table->timestamps();
         });
     }
