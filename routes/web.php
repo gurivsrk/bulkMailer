@@ -7,6 +7,8 @@ use App\Http\Controllers\OpenRateController;
 use App\Http\Controllers\IndexController;
 use App\Models\bulkMailer;
 use App\Jobs\test;
+use Illuminate\Support\Facades\Artisan;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,10 +28,10 @@ Route::post('/unsubscribe',[OpenRateController::class, 'unsubscribe'])->name('un
 
 
 Route::middleware(['auth', 'verified'])->group(function(){
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/', function () { return view('dashboard'); })->name('dashboard');
+
     Route::get('/previous-campaigns',[IndexController::class, 'previous_campaigns'])->name('previousCampaigns');
+    Route::get('/previous-campaigns/{id}/details',[IndexController::class, 'previous_campaigns_details'])->whereNumber('id')->name('previousCampaignsDetails');
     Route::post('/get-data', [IndexController::class,'get_data'])->name('getData');
 
     Route::get('/mailing-list',[IndexController::class, 'mail_list'])->name('mailList');
@@ -49,8 +51,10 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/deleted-emails',[BulkMailerController::class,'showDeleted'])->name('deletedEmails');
     Route::get('/restore-emails/{id}/restore',[BulkMailerController::class,'restore'])->name('restoreEmail');
 
-    // Test email opening
-
+    // Working Perfect
+    // Route::get('/test', function(){
+    //     Artisan::call('queue:clear');
+    // });
 });
 
 require __DIR__.'/auth.php';

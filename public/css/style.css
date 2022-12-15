@@ -52,7 +52,7 @@ button[type='submit']{
     outline: 35px solid #fff;
     outline-offset: -24px;
 }
-.campaigns table.dataTable th,.campaignstable .dataTable tr,.campaigns table.dataTable td{
+.campaigns table.dataTable th,.campaignstable .dataTable tr,.campaigns table.dataTable td, table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td{
     text-align: center;
 }
 @media (max-width: 1090px){.get-info {top: 21px}}

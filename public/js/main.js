@@ -12,7 +12,11 @@ $(document).ready(function(){
       $('#datatable').DataTable({
         stateSave: true,
         iDisplayLength:50,
-        responsive: true
+        responsive: true,
+        fixedHeader: {
+          header: true,
+          footer: true
+      }
       });
 
 

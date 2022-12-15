@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\category;
 use App\Models\bulkMailer;
 use App\Models\newsletter;
+use App\Models\newsletterMeta;
+use App\Models\SendingMail;
 
 class IndexController extends Controller
 {
@@ -37,6 +39,16 @@ class IndexController extends Controller
                         ->leftJoin('newsletter_metas', 'newsletter_metas.campaign_id','newsletter.id')
                         ->orderBy('id','asc')->paginate(100);
         return view('previousCampaigns',compact('allCampaign'));
+     }
+
+     public function previous_campaigns_details(SendingMail $mails,newsletter $newsletter,$id){
+          $newsletter::findOrFail($id);
+         $details = $newsletter->select('newsletter.id as id','newsletter.Subject as Subject','newsletter.from_name as from_name', 'newsletter.status', 'newsletter.newsletter','newsletter.created_at', 'newsletter_metas.categories_id', 'newsletter_metas.send_emails', 'newsletter_metas.total_emails')
+                     ->join('newsletter_metas', 'newsletter_metas.campaign_id','newsletter.id')
+                     ->where('newsletter.id', $id)
+                     ->first();
+         $emails = $mails->where('campaign_id',$id)->get();
+         return view('campaignDetail',compact('details','emails'));
      }
 
      public function get_data(Request $request){

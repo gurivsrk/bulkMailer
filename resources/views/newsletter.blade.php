@@ -19,13 +19,6 @@
                         @csrf
                         <!-- Email Address -->
                         <div class="block mt-4">
-                            <x-input-label for="from_name" :value="__('From Name')" />
-
-                            <x-text-input id="from_name" class="block mt-1 w-full" type="text" name="from_name" :value="old('from_name')" required autofocus />
-
-                            <x-input-error :messages="$errors->get('from_name')" class="mt-2" />
-                        </div>
-                        <div class="block mt-4">
                             <x-input-label for="categoryName" :value="@$isSingle?__('Emails'):__('Category Name')" />
                             <select class="block mt-1 w-full {{@$isSingle ? 'select2' : 'select1'}}" name="category_name[]" multiple>
                                 <option value=""> Please select an option</option>
@@ -34,18 +27,20 @@
                                     <option value="{{@$isSingle ? $category->email : $category->id}}" {{@$isSingle?'selected':''}}>{{@$isSingle? $category->email : $category->title.' ( '. $category->getEmailsCount($category->id) .' ) ' }}</option>
                                 @endforeach
                             </select>
-
                             <x-input-error :messages="$errors->get('category_name')" class="mt-2" />
                         </div>
-                        <div class="block mt-4">
-                            <x-input-label for="title" :value="__('Title')" />
-
-                            <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required autofocus />
-
-                            <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                        <div class="flex">
+                            <div class="block mt-4 w-full px-1">
+                                <x-input-label for="from_name" :value="__('From Name')" />
+                                <x-text-input id="from_name" class="block mt-1 w-full" type="text" name="from_name" :value="old('from_name')" required autofocus />
+                                <x-input-error :messages="$errors->get('from_name')" class="mt-2" />
+                            </div>
+                            <div class="block mt-4 w-full px-1">
+                                <x-input-label for="title" :value="__('Title')" />
+                                <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required autofocus />
+                                <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                            </div>
                         </div>
-
-
                         <div class="block mt-4">
                             <x-input-label for="code" :value="__('Newsletter')" />
                             <x-text-area id="editor" class="ckeditor" name='newsletter' required oldValue="{{old('newsletter')}}"/>
