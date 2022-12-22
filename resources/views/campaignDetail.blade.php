@@ -10,11 +10,13 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div id="campaign-details" class="overflow-x-scroll">
+                        @if($details->status!='completed')
                         <div class="addButton text-right">
-                            <x-add-button id="stopCampaign" class="ml-3">
+                            <x-add-button id="stopCampaign" data-id="{{@$details->id}}"  class="ml-3">
                                 {{ __('Stop Campaign') }}
                                 </x-add-button>
                         </div>
+                        @endif
                         <div class="newsletterPreview  my-8">
                             <div class="text-sm float-right bg-black text-white px-1 leading-6">{{$details->send_emails.'/'.$details->total_emails}}</div>
                             <div class="progress flex h-6 overflow-hidden text-xs bg-slate-200">
@@ -86,29 +88,26 @@
     </div>
     @push('scripts')
         <script>
-            const getData = ({id}) => {
-                $.ajax({
-                    url:"{{route('getData')}}",
-                    type:'post',
-                    header: {'X-CSRF-TOKEN':"{{ csrf_token() }}"},
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        id:id
-                    },
-                    beforeSend: function(){
-                        $('#showData').removeClass('hidden')
-                       $('#showData .ajaxData').html('waiting...')
-                    },
-                    success: (result)=>{
-                        $('#showData').removeClass('hidden')
-                        $('#showData .ajaxData').html(result)
-                    }
-                })
-            }
+            $('#stopCampaign').on('click',function(){
+                if(confirm('are you sure?')){
+                    const $this = $(this)
+                    $.ajax({
+                        url:"{{route('stopCampaign')}}",
+                        type:'post',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            id: $this.data('id')
+                        },
+                        beforeSend: function(){
+                            $this.text('waiting...')
+                        },
+                        success: (result)=>{
+                            console.log(result)
+                            $this.text('Done!').css('background','green')
+                        }
+                    })
+                }
+            })
         </script>
     @endpush
-    <div id="showData" class="fixed top-0 left-0 w-full flex h-screen items-center text-white text-center justify-center bg-black/40 hidden">
-        <div id="MailInfo"></div>
-        <div class="ajaxData"></div>
-    </div>
 </x-app-layout>

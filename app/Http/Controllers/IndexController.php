@@ -8,7 +8,7 @@ use App\Models\bulkMailer;
 use App\Models\newsletter;
 use App\Models\newsletterMeta;
 use App\Models\SendingMail;
-
+use Illuminate\Support\Facades\Artisan;
 class IndexController extends Controller
 {
      public function __construct()
@@ -65,12 +65,16 @@ class IndexController extends Controller
      }
 
      public function single_row(Request $request){
-
         $i = category::select('id')->where('title','LIKE','%'.$request->post('input').'%')->first();
         $id = $i ? $i->id : '';
          $emails = bulkMailer::where('email','LIKE','%'.$request->post('input').'%')->orWhere('type','LIKE','%'.$request->post('input').'%')->orWhere('category_id',$id)->get();
 
          return view('partials.mailList',compact(['emails']));
+     }
+
+     public function stop_campaign(newsletter $newsletter){
+        Artisan::call('queue:clear');
+        return 'success';
      }
 
 }

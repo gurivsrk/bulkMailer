@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/previous-campaigns',[IndexController::class, 'previous_campaigns'])->name('previousCampaigns');
     Route::get('/previous-campaigns/{id}/details',[IndexController::class, 'previous_campaigns_details'])->whereNumber('id')->name('previousCampaignsDetails');
     Route::post('/get-data', [IndexController::class,'get_data'])->name('getData');
+    Route::post('/stop-campaign', [IndexController::class,'stop_campaign'])->name('stopCampaign');
 
     Route::get('/mailing-list',[IndexController::class, 'mail_list'])->name('mailList');
     Route::post('/single-row',[IndexController::class, 'single_row'])->name('getSingleMail');

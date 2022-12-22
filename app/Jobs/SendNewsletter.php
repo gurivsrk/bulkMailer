@@ -39,7 +39,7 @@ class SendNewsletter implements ShouldQueue
      */
     public function handle(\App\Models\newsletter $newsletter, bulkMailer $bulkMailer)
     {
-        $daily_limit = 490;
+        $daily_limit = 105;
         $no_of_acc = 6;
         $perHour = ($daily_limit * $no_of_acc) / 24;
         $timeDelay = round(3600/ $perHour);
