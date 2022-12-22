@@ -40,7 +40,7 @@ class BulkMailerController extends Controller
         if($request->isMethod('post')){
             try{
                 foreach($request->post('category_name') as $email){
-                    mail::mailer('smtp2')->to($email)->send(new Newsletter($request->post('from_name'), $request->post('title'), $request->post('newsletter'), $request->post('category_name')[0]));
+                    mail::mailer('singleMailer')->to($email)->send(new Newsletter($request->post('from_name'), $request->post('title'), $request->post('newsletter'), $request->post('category_name')[0]));
                 }
                 $msg = 'Successfully Send Emails';
                 echo $msg;
