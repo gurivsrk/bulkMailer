@@ -103,7 +103,7 @@ class SendNewsletterWithDelay implements ShouldQueue
             'email'=>$this->email,
             'campaign_id' =>$this->newNewsletter->id,
             'smtp' => 'fail',
-            'error' => $e->getMessage()
+            'error' =>  'Smtp no. - '.$this->smtp.' '.$e->getMessage()
         ]);
 
         $counter = $sending->where('campaign_id',$this->newNewsletter->id)->count();
