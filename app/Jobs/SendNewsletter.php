@@ -111,7 +111,7 @@ class SendNewsletter implements ShouldQueue
             }
             $emailID = $mass == true ? $email : $email->email;
             $id = $mass == true ? 'NA' : $email->id;
-            SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$daily_limit,$no_of_acc, count($emails),$timeDelay,$newNewsletter,$newslettermeta, $smtp,$counter)->onQueue('redis');
+            SendNewsletterWithDelay::dispatch($emailID,$this->request,$id,$daily_limit,$no_of_acc, count($emails),$timeDelay,$newNewsletter,$newslettermeta, $smtp,$counter);
             $counter++;
         }
     }

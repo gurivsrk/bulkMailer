@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Models\bulkMailer;
 use App\Models\category;
+use App\Jobs\SendNewsletter;
 
 use App\Http\Requests\StorebulkMailerRequest;
-use App\Http\Requests\UpdatebulkMailerRequest;
 use App\Http\Requests\StoreCategoryRequest;
 
 use App\Traits\SendMail;
@@ -130,7 +130,7 @@ class BulkMailerController extends Controller
      * @param  \App\Http\Requests\StorebulkMailerRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorebulkMailerRequest $request)
+    public function store(StorebulkMailerRequest $request, SendNewsletter $SendNewsletter)
     {
         if($request->post('category_name')[0] != -12){
             if(count($request->post('category_name')) <= 1){
@@ -138,7 +138,7 @@ class BulkMailerController extends Controller
                 if(bulkMailer::where('category_id',$id)->where('type','subscribed')->count() < 1 ) return redirect()->back()->with('fail','No Email is assign to this category') ;
             }
         }
-        $this->Email($request->all());
+        $SendNewsletter->dispatch($request->all());
         return redirect()->back()->with('success','Successfully Send Emails');
     }
 

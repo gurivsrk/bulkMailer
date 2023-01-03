@@ -11,7 +11,7 @@ class OpenRateController extends Controller
 
     public function unsubscribe(Request $request, $email=null)
     {
-        $this->middleware('web');
+
         if($request->isMethod('post')){
             $e = html_entity_decode(base64_decode($request->post('email')));
             $result = bulkMailer::where('email',$e)->count();
