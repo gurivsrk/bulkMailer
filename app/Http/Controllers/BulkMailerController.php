@@ -12,6 +12,7 @@ use App\Jobs\SendNewsletter;
 
 use App\Http\Requests\StorebulkMailerRequest;
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\StorePersonRequest;
 
 use App\Traits\SendMail;
 use App\Mail\Newsletter;
@@ -54,6 +55,26 @@ class BulkMailerController extends Controller
         $isSingle = true;
         $categories = $bulkMailer->where('id',$id)->limit(1)->get();
         return view('newsletter',compact(['categories','isSingle']));
+     }
+
+     public function bulkUpload(Request $request)
+     {
+
+        $result =   $this->uploadFormBulk($request);
+        $msg = '';
+        $type = 'success';
+        if($result['success']){
+            $msg = 'Succesfully Added';
+        }
+        if($result['isExist']){
+            $msg = $msg.'! Error: some files already exists ';
+            $type = 'delete';
+        };
+        if($result['errors']){
+            $msg = $msg.'!! Error: '.implode(' , ',$result['errors']);
+            $type = 'delete';
+        }
+        return redirect()->back()->with($type, $msg);
      }
 
     /**
@@ -124,6 +145,29 @@ class BulkMailerController extends Controller
          return redirect()->back()->with($type,$msg);
     }
 
+    public function add_person_post(StorePersonRequest $catRequest){
+
+        $catValue = $catRequest->post('category_name');
+
+        if(!is_numeric($catValue)){
+           $cate=  category::create(['title' => $catValue]);
+           $catValue = $cate->id;
+        }
+
+        $this->id =  $catValue;
+        $email = $catRequest->post('email');
+
+           bulkMailer::create([
+                'name' =>   $catRequest->post('name'),
+                'email' =>  $email,
+                'category_id' => $this->id
+            ]);
+
+
+         return redirect()->back()->with('success','Successfully Added!!');
+     }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -179,6 +223,9 @@ class BulkMailerController extends Controller
             $bulkMailer->where('id',$request->post('id'))->update(['type' => $request->post('input')]);
         }elseif($request->post('type') == 'email'){
             $bulkMailer->where('id',$request->post('id'))->update(['email' => $request->post('input')]);
+        }
+        elseif($request->post('type') == 'name'){
+            $bulkMailer->where('id',$request->post('id'))->update(['name' => $request->post('input')]);
         }
        return 'success';
     }

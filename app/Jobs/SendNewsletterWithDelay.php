@@ -72,6 +72,7 @@ class SendNewsletterWithDelay implements ShouldQueue
 
         // $mail->mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
         Mail::mailer($ss)->to($this->email)->send(new Newsletter( $fromName, $title, $message, $this->email ));
+
         $this->id =='NA' ?'':$bulkMailer->where('id',$this->id)->update(['status'=>'success']);
 
         $sending = SendingMail::create([
@@ -88,12 +89,6 @@ class SendNewsletterWithDelay implements ShouldQueue
         $counter = $sending->where('campaign_id',$this->newNewsletter->id)->count();
 
         $this->newslettermeta->update(['send_emails' => $counter]);
-
-        if($this->email_count == $counter){
-            $bulkMailer->where('status','!=','-')->update(['status'=>'-']);
-            $this->newNewsletter->update(['status'=>'completed']);
-            //SendingMail::truncate();
-        }
     }
     catch(Exception $e){
 
@@ -108,7 +103,6 @@ class SendNewsletterWithDelay implements ShouldQueue
 
         $counter = $sending->where('campaign_id',$this->newNewsletter->id)->count();
         $this->newslettermeta->update(['send_emails' => $counter]);
-
         if($this->email_count == $counter){
             $check = $sending->where('campaign_id',$this->newNewsletter->id)->where('smtp','fail')->count();
             if($this->email_count == $check){
@@ -116,6 +110,11 @@ class SendNewsletterWithDelay implements ShouldQueue
                 $this->newNewsletter->update(['status'=>'fail']);
             }
         }
+    }
+    if($this->email_count == $counter){
+        $bulkMailer->where('status','!=','-')->update(['status'=>'-']);
+        $this->newNewsletter->update(['status'=>'completed']);
+        //SendingMail::truncate();
     }
 
     }

@@ -1,4 +1,11 @@
+@if(@$name)
+    <div>
+        Dear {{$name}}
+    </div>
+@endif
 {!!$msg!!}
-<div id="unsubscribe" >
-    **Please use this link to <a href="http://phplaravel-797419-3047241.cloudwaysapps.com/unsubscribe/{{base64_encode($toMail)}}" style="color:#000">unsubscribe</a> from all our emails.
-</div>
+@if(!(@$name))
+    <div id="unsubscribe" >
+        **Please use this link to <a href="{{url('/')}}/unsubscribe/{{base64_encode($toMail)}}" style="color:#000">unsubscribe</a> from all our emails.
+    </div>
+@endif

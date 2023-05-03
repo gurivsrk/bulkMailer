@@ -29,6 +29,16 @@
                             </select>
                             <x-input-error :messages="$errors->get('category_name')" class="mt-2" />
                         </div>
+                        <div class="block mt-4">
+                            <x-input-label for="With Attachment ?" :value="@$isSingle?__('Emails'):__('With Attachment ?')" />
+                            <select class="block mt-1 w-full" name="withAttachement">
+                                <option value=""> Please select an option</option>
+                                <option value="1">yes</option>
+                                <option value="0">No</option>
+
+                            </select>
+                            <x-input-error :messages="$errors->get('category_name')" class="mt-2" />
+                        </div>
                         <div class="flex">
                             <div class="block mt-4 w-full px-1">
                                 <x-input-label for="from_name" :value="__('From Name')" />

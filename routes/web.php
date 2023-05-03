@@ -45,6 +45,12 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('/bulkMailers',[BulkMailerController::class,'store'])->name('sendMailPost');
     Route::post('/ajax/mail-data-update',[BulkMailerController::class,'update'])->name('sendMailData');
 
+    Route::get('/add-person',[IndexController::class, 'add_person'])->name('addPerson');
+    Route::post('/add-person',[BulkMailerController::class, 'add_person_post'])->name('addPersonPost');
+
+    Route::get('/bulk-file-upload',[IndexController::class, 'bulkUpload'])->name('bulkUpload');
+    Route::post('/bulk-file-upload',[BulkMailerController::class, 'bulkUpload'])->name('forms.store.bulk');
+
     Route::get('/add-emails',[IndexController::class, 'add_emails'])->name('addEmails');
     Route::post('/upload-emails',[BulkMailerController::class,'create'])->name('uploadeMails');
 

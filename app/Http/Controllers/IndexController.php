@@ -23,9 +23,24 @@ class IndexController extends Controller
         return view('addMailList', compact('categories'));
      }
 
+     public function add_person(){
+
+        $categories = category::select('title','id')->orderBy('id','desc')->get();
+
+        return view('addTeam', compact('categories'));
+     }
+
+     public function bulkUpload(){
+
+        $categories = category::select('title','id')->orderBy('id','desc')->get();
+
+        return view('bulkUpload', compact('categories'));
+     }
+
+
      public function mail_list(category $category,bulkMailer $bulkMailer){
 
-        $emails = bulkMailer::select('emails.email','emails.id','emails.type','emails.status','emails.category_id','category.title as catname')
+        $emails = bulkMailer::select('emails.name','emails.email','emails.id','emails.type','emails.status','emails.category_id','category.title as catname')
                     ->join('category','category.id','emails.category_id')
                     ->orderBy('id','desc')->paginate(100);
 

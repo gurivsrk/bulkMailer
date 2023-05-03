@@ -27,6 +27,12 @@
                     <x-nav-link :href="route('addEmails')" :active="request()->routeIs('addEmails')">
                         {{ __('Add Mailing List') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('bulkUpload')" :active="request()->routeIs('bulkUpload')">
+                        {{ __('Upload Files') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('addPerson')" :active="request()->routeIs('addPerson')">
+                        {{ __('Add person with name') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -89,6 +95,12 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('addEmails')" :active="request()->routeIs('addEmails')">
                 {{ __('Add Mailing List') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('bulkUpload')" :active="request()->routeIs('bulkUpload')">
+                {{ __('Upload Files') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('addPerson')" :active="request()->routeIs('addPerson')">
+                {{ __('Add person with name') }}
             </x-responsive-nav-link>
         </div>
 
