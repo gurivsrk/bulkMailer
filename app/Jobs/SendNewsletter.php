@@ -45,7 +45,7 @@ class SendNewsletter implements ShouldQueue
         if($this->request['withAttachement'] == '1'){
             $emails = $bulkMailer->Subscribed()->where('category_id',$this->request['category_name'][0])->get();
             foreach($emails as $email){
-                Mail::mailer('salary')->to('gursharan@vsrkcapital.com')->send(new MailWithAttachement( $email->name , $this->request['title'], $this->request['newsletter'] ));
+                Mail::mailer('salary')->to('gursharan@vsrkcapital.com')->send(new MailWithAttachement( $email->name,$this->request['from_name'] , $this->request['title'], $this->request['newsletter'] ));
             }
 
         }

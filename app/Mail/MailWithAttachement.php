@@ -15,20 +15,20 @@ class MailWithAttachement extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $name,$title,$msg,$toMail;
+    public $name,$title,$msg,$toMail,$custom;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($name,$title,$msg)
+    public function __construct($name,$from,$title,$msg)
     {
         $this->name = $name;
         $this->title = $title;
         $this->msg = $msg;
-        $this->toMail = 'test@test.com';
-
+        $this->toMail = 'email@domain.com';
+        $this->custom = $from;
     }
 
     /**
@@ -39,7 +39,7 @@ class MailWithAttachement extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new address('sendmail5525@gmail.com', 'Test Sender'),
+            from: new address('sendmail5525@gmail.com', $this->custom),
             subject: $this->title,
         );
     }
