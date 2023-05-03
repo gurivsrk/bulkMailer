@@ -12,10 +12,12 @@ use Illuminate\Queue\SerializesModels;
 
 use App\Models\bulkMailer;
 use App\Models\newsletterMeta;
+use App\Models\SendingMail;
 
 use Illuminate\Support\Facades\Mail;
 
 use App\Mail\MailWithAttachement;
+use Mockery\Expectation;
 
 class SendNewsletter implements ShouldQueue
 {
@@ -43,10 +45,42 @@ class SendNewsletter implements ShouldQueue
     public function handle(\App\Models\newsletter $newsletter, bulkMailer $bulkMailer)
     {
         if($this->request['withAttachement'] == '1'){
+            $counter = 0;
             $emails = $bulkMailer->Subscribed()->where('category_id',$this->request['category_name'][0])->get();
+            $newNewsletter =  $newsletter->create([
+                'from_name' => $this->request['from_name'],
+                'from_email' => env('salary_MAILER'),
+                'Subject' => $this->request['title'],
+                'newsletter' => $this->request['newsletter'],
+                'status' => 'sending'
+            ]);
+
+            $newslettermeta = newsletterMeta::create([
+                'campaign_id' =>  $newNewsletter->id,
+                'categories_id' =>json_encode($this->request['category_name']),
+                'total_emails' => count($emails)
+             ]);
+
             foreach($emails as $email){
-                Mail::mailer('salary')->to('gursharan@vsrkcapital.com')->send(new MailWithAttachement( $email->name,$this->request['from_name'] , $this->request['title'], $this->request['newsletter'] ));
+                try{
+                    Mail::mailer('salary')->to('gursharan@vsrkcapital.com')->send(new MailWithAttachement( $email->name,$this->request['from_name'] , $this->request['title'], $this->request['newsletter'] ));
+                    $sending = SendingMail::create([
+                        'email'=>$email->email,
+                        'campaign_id' =>$newNewsletter->id,
+                        'smtp' => serialize([
+                            'smtp-email' => 'hr@vsrkcapital.com'
+                        ])
+                    ]);
+                    $counter++;
+                }
+                catch(Expectation $e){
+                    continue;
+                }
             }
+
+            $bulkMailer->where('status','!=','-')->update(['status'=>'-']);
+            $newslettermeta->update(['send_emails' => $counter]);
+            $newNewsletter->update(['status'=>'completed']);
 
         }
         else{

@@ -16,6 +16,7 @@ use App\Http\Requests\StorePersonRequest;
 
 use App\Traits\SendMail;
 use App\Mail\Newsletter;
+use App\Mail\MailWithAttachement;
 
 use Exception;
 class BulkMailerController extends Controller
@@ -39,12 +40,21 @@ class BulkMailerController extends Controller
 
     public function singleEmail(Request $request, bulkMailer $bulkMailer, $id=null){
         if($request->isMethod('post')){
+
             try{
+
                 foreach($request->post('category_name') as $email){
-                    mail::mailer('singleMailer')->to($email)->send(new Newsletter($request->post('from_name'), $request->post('title'), $request->post('newsletter'), $request->post('category_name')[0]));
+                    if($request->post('withAttachement') == '1'){
+                        $emailData = $bulkMailer->where('email', $email)->first();
+                        Mail::mailer('salary')->to($email)->send(new MailWithAttachement( $emailData['name'], $request->post('from_name'), $request->post('title'), $request->post('newsletter') ));
+                        // echo $emailData['name'];
+                    }
+                    else{
+                        mail::mailer('singleMailer')->to($email)->send(new Newsletter($request->post('from_name'), $request->post('title'), $request->post('newsletter'), $request->post('category_name')[0]));
+                    }
                 }
                 $msg = 'Successfully Send Emails';
-                echo $msg;
+                // echo $msg;
             }
             catch(Exception $err){
                 dd($err->getMessage().' <br> CUSTOM CODE STATUS: '.$err->getCode());

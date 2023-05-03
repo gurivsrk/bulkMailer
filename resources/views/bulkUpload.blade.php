@@ -23,7 +23,7 @@
                                 @csrf
                                 <div class="block mt-4  w-full px-1">
                                     <x-input-label for="name" :value="__('Attachments')" />
-                                    <input type="file" name="files[]" id="files" multiple directory="" webkitdirectory="" accept="application/pdf" moxdirectory="" required/>
+                                    <input type="file" name="files[]" id="files" multiple  accept="application/pdf"  required/>
                                 </div>
                                 <div class="mt-4 ">
                                     <x-input-label for="categoryName" :value="__('Category Name')" />
