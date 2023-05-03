@@ -63,9 +63,9 @@ class MailWithAttachement extends Mailable
      */
     public function attachments()
     {
-        if(file_exists(base_path("storage/app/public/".date('M')."/$this->name.pdf"))){
+        if(file_exists(base_path("storage/app/public/".date('Y').'/'.date('M')."/$this->name.pdf"))){
             return [
-                Attachment::fromPath(base_path("storage/app/public/".date('M')."/$this->name.pdf"))
+                Attachment::fromPath(base_path("storage/app/public/".date('Y').'/'.date('M')."/$this->name.pdf"))
                     ->as("$this->name.pdf")
                     ->withMime('application/pdf'),
             ];

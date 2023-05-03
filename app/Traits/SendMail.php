@@ -23,7 +23,7 @@ trait SendMail {
             if($file->getClientOriginalExtension() == 'pdf'){
 
                 $img_name = $file->getClientOriginalName();
-                $file->storePubliclyAs( date('M'), $img_name,'public');
+                $file->storePubliclyAs( date('Y').'/'.date('M'), $img_name,'public');
             }
             else{
                 $this->errorFile[] = $file->getClientOriginalName() . ' is not PDF';
